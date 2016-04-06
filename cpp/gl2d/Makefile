@@ -14,6 +14,9 @@ _default: libgl2d.a
 
 ######### DEPENDENCIES #########
 
+build/point.cpp:  include/point.h  build/util.o
+build/util.cpp:   include/util.h
+
 ######### BUILD #########
 
 BUILD_CPP := $(wildcard src/*.cpp)
