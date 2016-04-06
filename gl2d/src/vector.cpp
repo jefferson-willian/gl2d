@@ -8,7 +8,8 @@ namespace gl2d {
 
 Vector::Vector(double x, double y) : dest_(x, y) {}
 Vector::Vector(const ::gl2d::Point& dest) : dest_(dest) {}
-//Vector::Vector(const ::gl2d::Point& orig, const ::gl2d::Point& dest) : dest_(dest - orig) {}
+Vector::Vector(const ::gl2d::Point& orig, const ::gl2d::Point& dest) :
+    dest_(dest - orig) {}
 
 const ::gl2d::Point& Vector::Point() const {
     return dest_;

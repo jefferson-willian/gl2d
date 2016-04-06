@@ -10,16 +10,22 @@ class VectorTest : public ::testing::Test {
 };
 
 TEST_F(VectorTest, Constructor) {
-  double x = 2.3;
-  double y = -4.5;
+  double x1 = 2.3;
+  double y1 = -4.5;
 
-  const Point p(x, y);
+  double x2 = 1.3;
+  double y2 = 5.5;
 
-  const Vector v1(x, y);
-  const Vector v2(p);
+  const Point p1(x1, y1);
+  const Point p2(x2, y2);
 
-  EXPECT_EQ(v1.dest_, p);
-  EXPECT_EQ(v2.dest_, p);
+  const Vector v1(x1, y1);
+  const Vector v2(p1);
+  const Vector v3(p1, p2);
+
+  EXPECT_EQ(v1.dest_, p1);
+  EXPECT_EQ(v2.dest_, p1);
+  EXPECT_EQ(v3.dest_, p2 - p1);
 }
 
 TEST_F(VectorTest, Getters) {
@@ -57,7 +63,7 @@ TEST_F(VectorTest, Setters) {
 TEST_F(VectorTest, Magnitude) {
   double x = 3;
   double y = -4;
-  
+
   Vector v(x, y);
 
   EXPECT_DOUBLE_EQ(v.Magnitude(), 5);
@@ -66,7 +72,7 @@ TEST_F(VectorTest, Magnitude) {
 TEST_F(VectorTest, Normalize) {
   double x = 3;
   double y = -4;
-  
+
   Vector v1(x, y);
   Vector v2(0.6, -0.8);
 
