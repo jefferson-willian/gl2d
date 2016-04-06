@@ -1,0 +1,4 @@
+bin/*
+build/*
+libgl2d.a
+test/build/*
