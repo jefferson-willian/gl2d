@@ -22,6 +22,30 @@ void Point::y(double y) {
   y_ = y;
 }
 
+Point& Point::operator+=(const Point& p) {
+  x_ += p.x();
+  y_ += p.y();
+  return *this;
+}
+
+Point& Point::operator-=(const Point& p) {
+  x_ -= p.x();
+  y_ -= p.y();
+  return *this;
+}
+
+Point& Point::operator*=(double k) {
+  x_ *= k;
+  y_ *= k;
+  return *this;
+}
+
+Point& Point::operator/=(double k) {
+  x_ /= k;
+  y_ /= k;
+  return *this;
+}
+
 bool Point::operator==(const Point& p) const {
   return util::cmpD(x_, p.x()) == 0 && util::cmpD(y_, p.y()) == 0;
 }

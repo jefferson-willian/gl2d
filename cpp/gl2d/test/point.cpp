@@ -40,7 +40,35 @@ TEST_F(PointTest, Setters) {
   EXPECT_DOUBLE_EQ(y, p.y_);
 }
 
-TEST_F(PointTest, Operators) {
+TEST_F(PointTest, OperatorEqual) {
+  double x1 = 2.3;
+  double y1 = -4.5;
+
+  const Point p1(x1, y1);
+
+  double x2 = 2.3;
+  double y2 = -4.5;
+
+  const Point p2(x2, y2);
+
+  EXPECT_EQ(p1, p2);
+}
+
+TEST_F(PointTest, OperatorNotEqual) {
+  double x1 = 2.3;
+  double y1 = -4.5;
+
+  const Point p1(x1, y1);
+
+  double x2 = 1.3;
+  double y2 = 5.5;
+
+  const Point p2(x2, y2);
+
+  EXPECT_NE(p1, p2);
+}
+
+TEST_F(PointTest, OperatorSum) {
   double x1 = 2.3;
   double y1 = -4.5;
 
@@ -49,10 +77,63 @@ TEST_F(PointTest, Operators) {
   double x2 = 1.3;
   double y2 = 5.5;
 
-  Point p2(x2, y2);
+  const Point p2(x2, y2);
 
-  EXPECT_EQ(p1, p1);
-  EXPECT_NE(p1, p2);
+  const Point p3(x1 + x2, y1 + y2);
+
+  p1 += p2;
+
+  EXPECT_EQ(p1, p3);
+}
+
+TEST_F(PointTest, OperatorMinus) {
+  double x1 = 2.3;
+  double y1 = -4.5;
+
+  Point p1(x1, y1);
+
+  double x2 = 1.3;
+  double y2 = 5.5;
+
+  const Point p2(x2, y2);
+
+  const Point p3(x1 - x2, y1 - y2);
+
+  p1 -= p2;
+
+  EXPECT_EQ(p1, p3);
+}
+
+TEST_F(PointTest, OperatorMultiplication) {
+  double x1 = 2.3;
+  double y1 = -4.5;
+
+  Point p1(x1, y1);
+
+  double x2 = 3 * x1;
+  double y2 = 3 * y1;
+
+  const Point p2(x2, y2);
+
+  p1 *= 3;
+
+  EXPECT_EQ(p1, p2);
+}
+
+TEST_F(PointTest, OperatorDivision) {
+  double x1 = 2.3;
+  double y1 = -4.5;
+
+  Point p1(x1, y1);
+
+  double x2 = x1 / 3;
+  double y2 = y1 / 3;
+
+  const Point p2(x2, y2);
+
+  p1 /= 3;
+
+  EXPECT_EQ(p1, p2);
 }
 
 }  // namespace gl2d

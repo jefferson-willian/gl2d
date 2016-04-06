@@ -28,6 +28,11 @@ class Point {
   // Set y-coordinate.
   void y(double y);
 
+  Point& operator+=(const Point& p);
+  Point& operator-=(const Point& p);
+  Point& operator*=(double k);
+  Point& operator/=(double k);
+
   bool operator==(const Point& p) const;
   bool operator!=(const Point& p) const;
 
