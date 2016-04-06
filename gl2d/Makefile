@@ -4,9 +4,9 @@ CFLAGS := -Wall -Werror
 
 PYTHON := python2.7
 
-GTEST_DIR := ../../../googletest/googletest/
-GMOCK_DIR := ../../../googletest/googlemock/
-CPPLINT   := ../../../styleguide/cpplint/cpplint.py --filter=-legal/copyright --root=cpp
+GTEST_DIR := ../../googletest/googletest/
+GMOCK_DIR := ../../googletest/googlemock/
+CPPLINT   := ../../styleguide/cpplint/cpplint.py --filter=-legal/copyright --root=cpp
 
 -include Makefile.helper
 
