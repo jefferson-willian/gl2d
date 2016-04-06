@@ -46,6 +46,40 @@ Point& Point::operator/=(double k) {
   return *this;
 }
 
+Point operator+(const Point& p, const Point& q) {
+  Point t = p;
+  t += q;
+  return t;
+}
+
+Point operator-(const Point& p, const Point& q) {
+  Point t = p;
+  t -= q;
+  return t;
+}
+
+Point operator-(const Point& p) {
+  return Point(-p.x(), -p.y());
+}
+
+Point operator*(const Point& p, double k) {
+  Point t = p;
+  t *= k;
+  return t;
+}
+
+Point operator*(double k, const Point& p) {
+  Point t = p;
+  t *= k;
+  return t;
+}
+
+Point operator/(const Point& p, double k) {
+  Point t = p;
+  t /= k;
+  return t;
+}
+
 bool Point::operator==(const Point& p) const {
   return util::cmpD(x_, p.x()) == 0 && util::cmpD(y_, p.y()) == 0;
 }

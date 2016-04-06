@@ -33,6 +33,13 @@ class Point {
   Point& operator*=(double k);
   Point& operator/=(double k);
 
+  friend Point operator+(const Point& p, const Point& q);
+  friend Point operator-(const Point& p, const Point& q);
+  friend Point operator-(const Point& p);
+  friend Point operator*(const Point& p, double k);
+  friend Point operator*(double k, const Point& p);
+  friend Point operator/(const Point& p, double k);
+
   bool operator==(const Point& p) const;
   bool operator!=(const Point& p) const;
 

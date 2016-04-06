@@ -81,9 +81,8 @@ TEST_F(PointTest, OperatorSum) {
 
   const Point p3(x1 + x2, y1 + y2);
 
-  p1 += p2;
-
-  EXPECT_EQ(p1, p3);
+  EXPECT_EQ(p1 + p2, p3);
+  EXPECT_EQ(p2 + p1, p3);
 }
 
 TEST_F(PointTest, OperatorMinus) {
@@ -99,9 +98,8 @@ TEST_F(PointTest, OperatorMinus) {
 
   const Point p3(x1 - x2, y1 - y2);
 
-  p1 -= p2;
-
-  EXPECT_EQ(p1, p3);
+  EXPECT_EQ(p1 - p2, p3);
+  EXPECT_EQ(p2 - p1, -p3);
 }
 
 TEST_F(PointTest, OperatorMultiplication) {
@@ -115,9 +113,8 @@ TEST_F(PointTest, OperatorMultiplication) {
 
   const Point p2(x2, y2);
 
-  p1 *= 3;
-
-  EXPECT_EQ(p1, p2);
+  EXPECT_EQ(3 * p1, p2);
+  EXPECT_EQ(p1 * 3, p2);
 }
 
 TEST_F(PointTest, OperatorDivision) {
@@ -131,9 +128,7 @@ TEST_F(PointTest, OperatorDivision) {
 
   const Point p2(x2, y2);
 
-  p1 /= 3;
-
-  EXPECT_EQ(p1, p2);
+  EXPECT_EQ(p1 / 3, p2);
 }
 
 }  // namespace gl2d
