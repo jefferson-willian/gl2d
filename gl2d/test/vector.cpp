@@ -81,7 +81,7 @@ TEST_F(VectorTest, Normalize) {
   EXPECT_EQ(v1, v2);
 }
 
-TEST_F(VectorTest, OperatorSum) {
+TEST_F(VectorTest, Addition) {
   double x1 = 2.3;
   double y1 = -4.5;
 
@@ -92,12 +92,11 @@ TEST_F(VectorTest, OperatorSum) {
   Vector v2(x2, y2);
   Vector v3(x1 + x2, y1 + y2);
 
-  v1 += v2;
-
-  EXPECT_EQ(v1, v3);
+  EXPECT_EQ(v1 + v2, v3);
+  EXPECT_EQ(v2 + v1, v3);
 }
 
-TEST_F(VectorTest, OperatorMinus) {
+TEST_F(VectorTest, Subtraction) {
   double x1 = 2.3;
   double y1 = -4.5;
 
@@ -108,36 +107,36 @@ TEST_F(VectorTest, OperatorMinus) {
   Vector v2(x2, y2);
   Vector v3(x1 - x2, y1 - y2);
 
-  v1 -= v2;
-
-  EXPECT_EQ(v1, v3);
+  EXPECT_EQ(v1 - v2, v3);
+  EXPECT_EQ(v2 - v1, -v3);
 }
 
-TEST_F(VectorTest, OperatorScalarMultiplication) {
+TEST_F(VectorTest, ScalarMultiplication) {
   double x = 2.3;
   double y = -4.5;
 
+  double k = 3;
+
   Vector v1(x, y);
-  Vector v2(x * 3, y * 3);
+  Vector v2(x * k, y * k);
 
-  v1 *= 3;
-
-  EXPECT_EQ(v1, v2);
+  EXPECT_EQ(v1 * k, v2);
+  EXPECT_EQ(k * v1, v2);
 }
 
-TEST_F(VectorTest, OperatorScalarDivision) {
+TEST_F(VectorTest, ScalarDivision) {
   double x = 2.3;
   double y = -4.5;
 
+  double k = 3;
+
   Vector v1(x, y);
-  Vector v2(x / 3, y / 3);
+  Vector v2(x / k, y / k);
 
-  v1 /= 3;
-
-  EXPECT_EQ(v1, v2);
+  EXPECT_EQ(v1 / k, v2);
 }
 
-TEST_F(VectorTest, OperatorEqual) {
+TEST_F(VectorTest, EqualOperator) {
   double x = 2.3;
   double y = -4.5;
 
@@ -146,7 +145,7 @@ TEST_F(VectorTest, OperatorEqual) {
   EXPECT_EQ(v, v);
 }
 
-TEST_F(VectorTest, OperatorNotEqual) {
+TEST_F(VectorTest, NotEqualOperator) {
   double x1 = 2.3;
   double y1 = -4.5;
 

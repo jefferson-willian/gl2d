@@ -54,6 +54,13 @@ class Vector {
   Vector& operator*=(double k);
   Vector& operator/=(double k);
 
+  friend Vector operator+(const Vector& v, const Vector& w);
+  friend Vector operator-(const Vector& v, const Vector& w);
+  friend Vector operator-(const Vector& v);
+  friend Vector operator*(const Vector& v, double k);
+  friend Vector operator*(double k, const Vector& v);
+  friend Vector operator/(const Vector& v, double k);
+
   bool operator==(const Vector& v) const;
   bool operator!=(const Vector& v) const;
 

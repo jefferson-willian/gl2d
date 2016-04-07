@@ -64,6 +64,40 @@ Vector& Vector::operator/=(double k) {
   return *this;
 }
 
+Vector operator+(const Vector& v, const Vector& w) {
+  Vector t = v;
+  t += w;
+  return t;
+}
+
+Vector operator-(const Vector& v, const Vector& w) {
+  Vector t = v;
+  t -= w;
+  return t;
+}
+
+Vector operator-(const Vector& v) {
+  return Vector(-v.Point());
+}
+
+Vector operator*(const Vector& v, double k) {
+  Vector t = v;
+  t *= k;
+  return t;
+}
+
+Vector operator*(double k, const Vector& v) {
+  Vector t = v;
+  t *= k;
+  return t;
+}
+
+Vector operator/(const Vector& v, double k) {
+  Vector t = v;
+  t /= k;
+  return t;
+}
+
 bool Vector::operator==(const Vector& v) const {
   return dest_ == v.Point();
 }
