@@ -25,22 +25,22 @@ Radians& Radians::operator/=(double k) {
 }
 
 Radians& Radians::operator*=(const Radians& r) {
-  radians_ *= r.Get();
+  radians_ *= r.radians_;
   return *this;
 }
 
 Radians& Radians::operator+=(const Radians& r) {
-  radians_ += r.Get();
+  radians_ += r.radians_;
   return *this;
 }
 
 Radians& Radians::operator-=(const Radians& r) {
-  radians_ -= r.Get();
+  radians_ -= r.radians_;
   return *this;
 }
 
 Radians& Radians::operator/=(const Radians& r) {
-  radians_ /= r.Get();
+  radians_ /= r.radians_;
   return *this;
 }
 
@@ -132,7 +132,7 @@ Radians& Radians::operator=(double k) {
 }
 
 bool Radians::operator==(const Radians& radians) const {
-  return util::cmpD(radians_, radians.Get()) == 0;
+  return util::cmpD(radians_, radians.radians_) == 0;
 }
 
 bool Radians::operator!=(const Radians& radians) const {
@@ -140,11 +140,11 @@ bool Radians::operator!=(const Radians& radians) const {
 }
 
 double Radians::Cos(const Radians& radians) {
-  return cos(radians.Get());
+  return cos(radians.radians_);
 }
 
 double Radians::Sin(const Radians& radians) {
-  return sin(radians.Get());
+  return sin(radians.radians_);
 }
 
 const Radians Radians::PI(3.14159265358979323846264338327950288419716939937510);

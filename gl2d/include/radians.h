@@ -18,8 +18,6 @@ class Radians {
   Radians() = default;
   ~Radians() = default;
 
-  double Get() const { return radians_; }
-
   // Mathematical operators.
   Radians& operator*=(double k);
   Radians& operator+=(double k);

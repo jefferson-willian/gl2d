@@ -13,9 +13,6 @@ TEST_F(RadiansTest, Constructor) {
 }
 
 TEST_F(RadiansTest, Getters) {
-  Radians rad(3.14);
-
-  EXPECT_NEAR(rad.Get(), 3.14, 1e-10);
 }
 
 TEST_F(RadiansTest, Setters) {
