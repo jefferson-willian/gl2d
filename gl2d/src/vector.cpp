@@ -49,8 +49,8 @@ Radians Vector::Angle() const {
 }
 
 Vector& Vector::Rotate(const Radians& angle) {
-  double x = dest_.x() * cos(angle) - dest_.y() * sin(angle);
-  double y = dest_.x() * sin(angle) + dest_.y() * cos(angle);
+  double x = dest_.x() * Radians::Cos(angle) - dest_.y() * Radians::Sin(angle);
+  double y = dest_.x() * Radians::Sin(angle) + dest_.y() * Radians::Cos(angle);
   dest_.x(x);
   dest_.y(y);
   return *this;

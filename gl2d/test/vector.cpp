@@ -84,14 +84,14 @@ TEST_F(VectorTest, Angle) {
   Vector v7(0, -3);
   Vector v8(3, -3);
 
-  EXPECT_DOUBLE_EQ(v1.Angle(), 0/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v2.Angle(), 1/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v3.Angle(), 2/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v4.Angle(), 3/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v5.Angle(), 4/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v6.Angle(), 5/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v7.Angle(), 6/4. * Radians::PI);
-  EXPECT_DOUBLE_EQ(v8.Angle(), 7/4. * Radians::PI);
+  EXPECT_EQ(v1.Angle(), 0/4. * Radians::PI);
+  EXPECT_EQ(v2.Angle(), 1/4. * Radians::PI);
+  EXPECT_EQ(v3.Angle(), 2/4. * Radians::PI);
+  EXPECT_EQ(v4.Angle(), 3/4. * Radians::PI);
+  EXPECT_EQ(v5.Angle(), 4/4. * Radians::PI);
+  EXPECT_EQ(v6.Angle(), 5/4. * Radians::PI);
+  EXPECT_EQ(v7.Angle(), 6/4. * Radians::PI);
+  EXPECT_EQ(v8.Angle(), 7/4. * Radians::PI);
 }
 
 TEST_F(VectorTest, Rotation) {
