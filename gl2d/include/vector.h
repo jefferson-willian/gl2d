@@ -5,6 +5,7 @@
 #include <istream>
 #include <ostream>
 
+#include "gl2d/include/radians.h"
 #include "gl2d/include/point.h"
 #include "gtest/gtest.h"
 
@@ -48,6 +49,8 @@ class Vector {
 
   // Normalize vector.
   Vector& Normalize();
+
+  Radians Angle() const;
 
   Vector& operator+=(const Vector& v);
   Vector& operator-=(const Vector& v);

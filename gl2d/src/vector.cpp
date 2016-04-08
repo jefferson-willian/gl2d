@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "gl2d/include/point.h"
+#include "gl2d/include/util.h"
 
 namespace gl2d {
 
@@ -42,6 +43,13 @@ double Vector::Magnitude() const {
 Vector& Vector::Normalize() {
   *this /= Magnitude();
   return *this;
+}
+
+Radians Vector::Angle() const {
+  Radians angle(acos(dest_.x() / Magnitude()));
+  if (util::cmpD(dest_.y(), 0) < 0)
+    angle = 2 * Radians::PI - angle;
+  return angle;
 }
 
 Vector& Vector::operator+=(const Vector& v) {

@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "gl2d/include/radians.h"
 #include "gl2d/include/point.h"
 #include "gl2d/include/vector.h"
 #include "gtest/gtest.h"
@@ -79,6 +80,26 @@ TEST_F(VectorTest, Normalize) {
   v1.Normalize();
 
   EXPECT_EQ(v1, v2);
+}
+
+TEST_F(VectorTest, Angle) {
+  Vector v1(3, 0);
+  Vector v2(3, 3);
+  Vector v3(0, 3);
+  Vector v4(-3, 3);
+  Vector v5(-3, 0);
+  Vector v6(-3, -3);
+  Vector v7(0, -3);
+  Vector v8(3, -3);
+
+  EXPECT_DOUBLE_EQ(v1.Angle(), 0/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v2.Angle(), 1/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v3.Angle(), 2/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v4.Angle(), 3/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v5.Angle(), 4/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v6.Angle(), 5/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v7.Angle(), 6/4. * Radians::PI);
+  EXPECT_DOUBLE_EQ(v8.Angle(), 7/4. * Radians::PI);
 }
 
 TEST_F(VectorTest, Addition) {
