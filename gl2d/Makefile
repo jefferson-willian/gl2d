@@ -14,8 +14,9 @@ _default: libgl2d.a
 
 ######### DEPENDENCIES #########
 
-build/point.cpp:  include/point.h  build/util.o
-build/util.cpp:   include/util.h
+src/point.cpp:  include/point.h  build/util.o
+src/util.cpp:   include/util.h
+src/angle.cpp:  include/angle.h
 
 ######### BUILD #########
 
