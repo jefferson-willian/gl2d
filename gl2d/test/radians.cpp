@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "gl2d/include/radians.h"
 #include "gtest/gtest.h"
 
@@ -9,99 +7,115 @@ class RadiansTest : public ::testing::Test {
 };
 
 TEST_F(RadiansTest, Constructor) {
-  Radians rad1(3.14);
-  Radians rad2;
+  Radians rad(3.14);
 
-  EXPECT_DOUBLE_EQ(rad1.radians_, 3.14);
-  EXPECT_DOUBLE_EQ(rad2.radians_, 0);
+  EXPECT_NEAR(rad.radians_, 3.14, 1e-10);
 }
 
-TEST_F(RadiansTest, DoubleAssignment) {
-  Radians rad(0);
-  rad = 3.14;
+TEST_F(RadiansTest, Getters) {
+  Radians rad(3.14);
 
-  EXPECT_DOUBLE_EQ(rad.radians_, 3.14);
+  EXPECT_NEAR(rad.Get(), 3.14, 1e-10);
+}
+
+TEST_F(RadiansTest, Setters) {
 }
 
 TEST_F(RadiansTest, Addition) {
-  Radians answer = Radians::TWOPI;
-
   double pi = 3.14159265359;
+  double twopi = 2 * pi;
 
-  Radians r1 = Radians::PI;
-  Radians r2 = Radians::PI;
-  Radians r3 = Radians::PI;
+  Radians r1 = Radians::PI + Radians::PI;
+  Radians r2 = Radians::PI + pi;
+  Radians r3 = pi + Radians::PI;
+  Radians r4 = +Radians::TWOPI;
+  Radians r5(pi);
+  r5 += Radians::PI;
+  Radians r6(pi);
+  r6 += pi;
 
-  r1 += Radians::PI;
-  r2 += pi;
-
-  EXPECT_EQ(r1, answer);
-  EXPECT_EQ(r2, answer);
-  EXPECT_EQ(r3 + pi, answer);
-  EXPECT_EQ(pi + r3, answer);
-  EXPECT_EQ(+answer,  answer);
+  EXPECT_NEAR(r1.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r2.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r3.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r4.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r5.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r6.radians_, twopi, 1e-10);
 }
 
 TEST_F(RadiansTest, Subtraction) {
-  Radians answer = Radians::PI;
-
   double pi = 3.14159265359;
   double twopi = 2 * pi;
 
-  Radians r1 = Radians::TWOPI;
-  Radians r2 = Radians::TWOPI;
-  Radians r3 = Radians::TWOPI;
-  Radians r4 = Radians::PI;
-  Radians r5 = -Radians::PI;
+  Radians r1 = Radians::TWOPI - Radians::PI;
+  Radians r2 = Radians::TWOPI - pi;
+  Radians r3 = twopi - Radians::PI;
+  Radians r4 = -Radians::PI;
+  Radians r5(twopi);
+  r5 -= Radians::PI;
+  Radians r6(twopi);
+  r6 -= pi;
 
-  r1 -= Radians::PI;
-  r2 -= pi;
-
-  EXPECT_EQ(r1, answer);
-  EXPECT_EQ(r2, answer);
-  EXPECT_EQ(r3 - pi, answer);
-  EXPECT_EQ(twopi - r4, answer);
-  EXPECT_EQ(-r5,  answer);
+  EXPECT_NEAR(r1.radians_, pi, 1e-10);
+  EXPECT_NEAR(r2.radians_, pi, 1e-10);
+  EXPECT_NEAR(r3.radians_, pi, 1e-10);
+  EXPECT_NEAR(r4.radians_, -pi, 1e-10);
+  EXPECT_NEAR(r5.radians_, pi, 1e-10);
+  EXPECT_NEAR(r6.radians_, pi, 1e-10);
 }
 
-TEST_F(RadiansTest, Multiplication) {
+TEST_F(RadiansTest, Product) {
   double pi = 3.14159265359;
   double twopi = 2 * pi;
-  double answer_double = pi * twopi;
 
-  Radians answer(answer_double);
+  Radians r1 = Radians::PI * twopi;
+  Radians r2 = twopi * Radians::PI;
+  Radians r3 = Radians::PI * Radians::TWOPI;
+  Radians r4(twopi);
+  r4 *= pi;
+  Radians r5(twopi);
+  r5 *= Radians::PI;
 
-  Radians r1 = Radians::TWOPI;
-  Radians r2 = Radians::TWOPI;
-
-  r1 *= Radians::PI;
-  r2 *= pi;
-
-  EXPECT_EQ(r1, answer);
-  EXPECT_EQ(r2, answer);
-  EXPECT_EQ(Radians::PI * Radians::TWOPI, answer);
-  EXPECT_EQ(Radians::PI * twopi, answer);
-  EXPECT_EQ(pi * Radians::TWOPI, answer);
+  EXPECT_NEAR(r1.radians_, twopi * pi, 1e-10);
+  EXPECT_NEAR(r2.radians_, twopi * pi, 1e-10);
+  EXPECT_NEAR(r3.radians_, twopi * pi, 1e-10);
+  EXPECT_NEAR(r4.radians_, twopi * pi, 1e-10);
+  EXPECT_NEAR(r5.radians_, twopi * pi, 1e-10);
 }
 
 TEST_F(RadiansTest, Division) {
   double pi = 3.14159265359;
   double twopi = 2 * pi;
-  double answer_double = twopi / pi;
 
-  Radians answer(answer_double);
+  Radians r1 = Radians::PI / twopi;
+  Radians r2 = pi / Radians::TWOPI;
+  Radians r3 = Radians::PI / Radians::TWOPI;
+  Radians r4(pi);
+  r4 /= twopi;
+  Radians r5(pi);
+  r5 /= Radians::TWOPI;
 
-  Radians r1 = Radians::TWOPI;
-  Radians r2 = Radians::TWOPI;
+  EXPECT_NEAR(r1.radians_, 0.5, 1e-10);
+  EXPECT_NEAR(r2.radians_, 0.5, 1e-10);
+  EXPECT_NEAR(r3.radians_, 0.5, 1e-10);
+  EXPECT_NEAR(r4.radians_, 0.5, 1e-10);
+  EXPECT_NEAR(r5.radians_, 0.5, 1e-10);
+}
 
-  r1 /= Radians::PI;
-  r2 /= pi;
+TEST_F(RadiansTest, EqualOperator) {
+  // TODO
+}
 
-  EXPECT_EQ(r1, answer);
-  EXPECT_EQ(r2, answer);
-  EXPECT_EQ(Radians::TWOPI / Radians::PI, answer);
-  EXPECT_EQ(Radians::TWOPI / pi, answer);
-  EXPECT_EQ(twopi / Radians::PI, answer);
+TEST_F(RadiansTest, NotEqualOperator) {
+  // TODO
+}
+
+TEST_F(RadiansTest, DoubleAssignment) {
+  double pi = 3.14159265359;
+
+  Radians rad;
+  rad = pi;
+
+  EXPECT_NEAR(rad.radians_, pi, 1e-10);
 }
 
 TEST_F(RadiansTest, Cosine) {

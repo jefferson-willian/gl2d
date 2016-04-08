@@ -2,8 +2,6 @@
 
 namespace gl2d {
 
-Radians::Radians() : radians_(0) {}
-
 Radians::Radians(double radians) : radians_(radians) {}
 
 Radians& Radians::operator*=(double k) {

@@ -13,10 +13,9 @@ class Radians {
   double radians_;
 
  public:
-  // Create a 0 radian.
-  Radians();
   // Create a |radians| radians.
   explicit Radians(double radians);
+  Radians() = default;
   ~Radians() = default;
 
   double Get() const { return radians_; }
@@ -52,6 +51,7 @@ class Radians {
   bool operator==(const Radians& radians) const;
   bool operator!=(const Radians& radians) const;
 
+  // Trigonometric Functions.
   static double Cos(const Radians& radians);
   static double Sin(const Radians& radians);
 
@@ -59,7 +59,13 @@ class Radians {
   static const Radians PI;
   static const Radians TWOPI;
 
+  // Friend test classes.
   FRIEND_TEST(RadiansTest, Constructor);
+  FRIEND_TEST(RadiansTest, Setters);
+  FRIEND_TEST(RadiansTest, Addition);
+  FRIEND_TEST(RadiansTest, Subtraction);
+  FRIEND_TEST(RadiansTest, Product);
+  FRIEND_TEST(RadiansTest, Division);
   FRIEND_TEST(RadiansTest, DoubleAssignment);
 };
 
