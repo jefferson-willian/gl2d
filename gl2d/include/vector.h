@@ -52,6 +52,8 @@ class Vector {
 
   Radians Angle() const;
 
+  Vector& Rotate(const Radians& angle);
+
   Vector& operator+=(const Vector& v);
   Vector& operator-=(const Vector& v);
   Vector& operator*=(double k);

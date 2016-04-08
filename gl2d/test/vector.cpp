@@ -102,6 +102,37 @@ TEST_F(VectorTest, Angle) {
   EXPECT_DOUBLE_EQ(v8.Angle(), 7/4. * Radians::PI);
 }
 
+TEST_F(VectorTest, Rotation) {
+  double factor = 3;
+
+  Vector v1 = Vector::i * factor;
+  Vector v2 = Vector::j * factor;
+  Vector v3 = -Vector::i * factor;
+  Vector v4 = -Vector::j * factor;
+
+  Radians d0(0);
+  Radians d90(Radians::PI / 2);
+  Radians d180(Radians::PI);
+  Radians d270(3 * Radians::PI / 2);
+
+  Vector v5 = Vector::i * factor;
+  v5.Rotate(d0);
+
+  Vector v6 = Vector::i * factor;
+  v6.Rotate(d90);
+
+  Vector v7 = Vector::i * factor;
+  v7.Rotate(d180);
+
+  Vector v8 = Vector::i * factor;
+  v8.Rotate(d270);
+
+  EXPECT_EQ(v1, v5);
+  EXPECT_EQ(v2, v6);
+  EXPECT_EQ(v3, v7);
+  EXPECT_EQ(v4, v8);
+}
+
 TEST_F(VectorTest, Addition) {
   double x1 = 2.3;
   double y1 = -4.5;
