@@ -30,14 +30,14 @@ Point& Point::Translate(const Vector& v) {
 }
 
 Point& Point::operator+=(const Point& p) {
-  x_ += p.x();
-  y_ += p.y();
+  x_ += p.x_;
+  y_ += p.y_;
   return *this;
 }
 
 Point& Point::operator-=(const Point& p) {
-  x_ -= p.x();
-  y_ -= p.y();
+  x_ -= p.x_;
+  y_ -= p.y_;
   return *this;
 }
 
@@ -70,7 +70,10 @@ Point operator-(const Point& p, const Point& q) {
 }
 
 Point operator-(const Point& p) {
-  return Point(-p.x(), -p.y());
+  Point t;
+  t.x_ = -p.x_;
+  t.y_ = -p.y_;
+  return t;
 }
 
 Point operator*(const Point& p, double k) {
@@ -96,7 +99,7 @@ bool Point::operator==(const Point& p) const {
 }
 
 bool Point::operator!=(const Point& p) const {
-  return !(*this == p);
+  return util::cmpD(x_, p.x()) != 0 || util::cmpD(y_, p.y()) != 0;
 }
 
 }  // namespace gl2d

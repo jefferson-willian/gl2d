@@ -16,7 +16,8 @@ class Point {
   double y_;
 
  public:
-  explicit Point(double x, double y);
+  Point(double x, double y);
+  Point() = default;
   ~Point() = default;
 
   // Get x-coordinate.
@@ -52,13 +53,17 @@ class Point {
   bool operator!=(const Point& p) const;
 
   // Friend test classes.
+  friend class PointTest;
   FRIEND_TEST(PointTest, Constructor);
+  FRIEND_TEST(PointTest, Getters);
   FRIEND_TEST(PointTest, Setters);
   FRIEND_TEST(PointTest, Translation);
   FRIEND_TEST(PointTest, Addition);
   FRIEND_TEST(PointTest, Subtraction);
   FRIEND_TEST(PointTest, Multiplication);
   FRIEND_TEST(PointTest, Division);
+  FRIEND_TEST(PointTest, OperatorEqual);
+  FRIEND_TEST(PointTest, OperatorNotEqual);
 };
 
 }  // namespace gl2d

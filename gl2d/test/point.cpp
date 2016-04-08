@@ -5,141 +5,132 @@
 namespace gl2d {
 
 class PointTest : public ::testing::Test {
+ protected:
+  Point kP1;
+  Point kP2;
+
+  double kX1 = 2.3;
+  double kY1 = -4.5;
+
+  double kX2 = 1.3;
+  double kY2 = 5.5;
+
+ public:
+  PointTest() {
+    kP1.x_ = kX1;
+    kP1.y_ = kY1;
+
+    kP2.x_ = kX2;
+    kP2.y_ = kY2;
+  }
 };
 
 TEST_F(PointTest, Constructor) {
-  double x = 2.3;
-  double y = -4.5;
+  const Point p(kX1, kY1);
 
-  const Point p(x, y);
-
-  EXPECT_NEAR(x, p.x_, 1e-10);
-  EXPECT_NEAR(y, p.y_, 1e-10);
+  EXPECT_NEAR(kX1, p.x_, 1e-10);
+  EXPECT_NEAR(kY1, p.y_, 1e-10);
 }
 
 TEST_F(PointTest, Getters) {
-  double x = 2.3;
-  double y = -4.5;
-
-  const Point p(x, y);
-
-  EXPECT_NEAR(x, p.x(), 1e-10);
-  EXPECT_NEAR(y, p.y(), 1e-10);
+  EXPECT_NEAR(kX1, kP1.x(), 1e-10);
+  EXPECT_NEAR(kY1, kP1.y(), 1e-10);
 }
 
 TEST_F(PointTest, Setters) {
-  double x = 2.3;
-  double y = -4.5;
+  Point p;
 
-  Point p(0, 0);
-  p.x(x);
-  p.y(y);
+  p.x(kX1);
+  p.y(kY1);
 
-  EXPECT_NEAR(x, p.x_, 1e-10);
-  EXPECT_NEAR(y, p.y_, 1e-10);
+  EXPECT_NEAR(kX1, p.x_, 1e-10);
+  EXPECT_NEAR(kY1, p.y_, 1e-10);
 }
 
 TEST_F(PointTest, Translation) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  Point p = kP1;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
+  p.Translate(Vector(kX2, kY2));
 
-  Point p(x1, y1);
-
-  p.Translate(Vector(x2, y2));
-
-  EXPECT_NEAR(x1 + x2, p.x_, 1e-10);
-  EXPECT_NEAR(y1 + y2, p.y_, 1e-10);
+  EXPECT_NEAR(kX1 + kX2, p.x_, 1e-10);
+  EXPECT_NEAR(kY1 + kY2, p.y_, 1e-10);
 }
 
 TEST_F(PointTest, Addition) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  const Point p1 = kP1 + kP2;
+  const Point p2 = +kP1;
+  Point p3 = kP1;
+  p3 += kP2;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
+  EXPECT_NEAR(kX1 + kX2, p1.x_, 1e-10);
+  EXPECT_NEAR(kY1 + kY2, p1.y_, 1e-10);
 
-  const Point p1 = Point(x1, y1) + Point(x2, y2);
-  const Point p2 = +p1;
-  Point p3 = Point(x1, y1);
-  p3 += Point(x2, y2);
+  EXPECT_NEAR(kX1, p2.x_, 1e-10);
+  EXPECT_NEAR(kY1, p2.y_, 1e-10);
 
-  EXPECT_NEAR(x1 + x2, p1.x_, 1e-10);
-  EXPECT_NEAR(y1 + y2, p1.y_, 1e-10);
-
-  EXPECT_NEAR(x1 + x2, p2.x_, 1e-10);
-  EXPECT_NEAR(y1 + y2, p2.y_, 1e-10);
-
-  EXPECT_NEAR(x1 + x2, p3.x_, 1e-10);
-  EXPECT_NEAR(y1 + y2, p3.y_, 1e-10);
+  EXPECT_NEAR(kX1 + kX2, p3.x_, 1e-10);
+  EXPECT_NEAR(kY1 + kY2, p3.y_, 1e-10);
 }
 
 TEST_F(PointTest, Subtraction) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  const Point p1 = kP1 - kP2;
+  const Point p2 = -kP1;
+  Point p3 = kP1;
+  p3 -= kP2;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
+  EXPECT_NEAR(kX1 - kX2, p1.x_, 1e-10);
+  EXPECT_NEAR(kY1 - kY2, p1.y_, 1e-10);
 
-  const Point p1 = Point(x1, y1) - Point(x2, y2);
-  const Point p2 = -p1;
-  Point p3 = Point(x1, y1);
-  p3 -= Point(x2, y2);
+  EXPECT_NEAR(-kX1, p2.x_, 1e-10);
+  EXPECT_NEAR(-kY1, p2.y_, 1e-10);
 
-  EXPECT_NEAR(x1 - x2, p1.x_, 1e-10);
-  EXPECT_NEAR(y1 - y2, p1.y_, 1e-10);
-
-  EXPECT_NEAR(x2 - x1, p2.x_, 1e-10);
-  EXPECT_NEAR(y2 - y1, p2.y_, 1e-10);
-
-  EXPECT_NEAR(x1 - x2, p3.x_, 1e-10);
-  EXPECT_NEAR(y1 - y2, p3.y_, 1e-10);
+  EXPECT_NEAR(kX1 - kX2, p3.x_, 1e-10);
+  EXPECT_NEAR(kY1 - kY2, p3.y_, 1e-10);
 }
 
 TEST_F(PointTest, Multiplication) {
-  double x = 2.3;
-  double y = -4.5;
-
   double k = 3.5;
 
-  const Point p1 = Point(x, y) * k;
-  const Point p2 = k * Point(x, y);
-  Point p3 = Point(x, y);
+  const Point p1 = kP1 * k;
+  const Point p2 = k * kP1;
+  Point p3 = kP1;
   p3 *= k;
 
-  EXPECT_NEAR(x * k, p1.x_, 1e-10);
-  EXPECT_NEAR(y * k, p1.y_, 1e-10);
+  EXPECT_NEAR(kX1 * k, p1.x_, 1e-10);
+  EXPECT_NEAR(kY1 * k, p1.y_, 1e-10);
 
-  EXPECT_NEAR(x * k, p2.x_, 1e-10);
-  EXPECT_NEAR(y * k, p2.y_, 1e-10);
+  EXPECT_NEAR(kX1 * k, p2.x_, 1e-10);
+  EXPECT_NEAR(kY1 * k, p2.y_, 1e-10);
 
-  EXPECT_NEAR(x * k, p3.x_, 1e-10);
-  EXPECT_NEAR(y * k, p3.y_, 1e-10);
+  EXPECT_NEAR(kX1 * k, p3.x_, 1e-10);
+  EXPECT_NEAR(kY1 * k, p3.y_, 1e-10);
 }
 
 TEST_F(PointTest, Division) {
-  double x = 2.3;
-  double y = -4.5;
-
   double k = 3.5;
 
-  const Point p1 = Point(x, y) / k;
-  Point p2 = Point(x, y);
+  const Point p1 = kP1 / k;
+  Point p2 = kP1;
   p2 /= k;
 
-  EXPECT_NEAR(x / k, p1.x_, 1e-10);
-  EXPECT_NEAR(y / k, p1.y_, 1e-10);
+  EXPECT_NEAR(kX1 / k, p1.x_, 1e-10);
+  EXPECT_NEAR(kY1 / k, p1.y_, 1e-10);
 
-  EXPECT_NEAR(x / k, p2.x_, 1e-10);
-  EXPECT_NEAR(y / k, p2.y_, 1e-10);
+  EXPECT_NEAR(kX1 / k, p2.x_, 1e-10);
+  EXPECT_NEAR(kY1 / k, p2.y_, 1e-10);
 }
 
 TEST_F(PointTest, OperatorEqual) {
-  const Point p1(2.3, -4.5);
-  const Point p2(1.3, -4.5);
-  const Point p3(2.3, -2.5);
+  Point p1, p2, p3;
+
+  p1.x_ = 2.3;
+  p1.y_ = -4.5;
+
+  p2.x_ = 1.3;
+  p2.y_ = -4.5;
+
+  p3.x_ = 2.3;
+  p3.y_ = -2.5;
 
   EXPECT_TRUE(p1 == p1);
   EXPECT_FALSE(p1 == p2);
@@ -147,9 +138,16 @@ TEST_F(PointTest, OperatorEqual) {
 }
 
 TEST_F(PointTest, OperatorNotEqual) {
-  const Point p1(2.3, -4.5);
-  const Point p2(1.3, -4.5);
-  const Point p3(2.3, -2.5);
+  Point p1, p2, p3;
+
+  p1.x_ = 2.3;
+  p1.y_ = -4.5;
+
+  p2.x_ = 1.3;
+  p2.y_ = -4.5;
+
+  p3.x_ = 2.3;
+  p3.y_ = -2.5;
 
   EXPECT_FALSE(p1 != p1);
   EXPECT_TRUE(p1 != p2);
