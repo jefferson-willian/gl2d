@@ -5,6 +5,8 @@
 
 namespace gl2d {
 
+// Forward declaration.
+class Vector;
 
 class Point {
  protected:
@@ -29,6 +31,9 @@ class Point {
   // Set y-coordinate.
   void y(double y);
 
+  // Translate transformation.
+  Point& Translate(const Vector& v);
+
   // Mathematical operators.
   Point& operator+=(const Point& p);
   Point& operator-=(const Point& p);
@@ -48,7 +53,6 @@ class Point {
   FRIEND_TEST(PointTest, Constructor);
   FRIEND_TEST(PointTest, Setters);
 };
-
 
 }  // namespace gl2d
 

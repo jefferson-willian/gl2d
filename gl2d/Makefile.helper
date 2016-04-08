@@ -3,15 +3,15 @@ define LOG_TO_CONSOLE
 endef
 
 define STD_STATIC_SHARED_LIBRARY
-	@$(call LOG_TO_CONSOLE, ar -cr $1 $2, library   \033[1m$1\033[0m)
+	@$(call LOG_TO_CONSOLE,ar -cr $1 $2,library   \033[1m$1\033[0m)
 endef 
 
 define STD_LINKING
-	@$(call LOG_TO_CONSOLE, $(CC) ${CFLAGS} $3 -o $1 $2, linking   \033[1m$1\033[0m)
+	@$(call LOG_TO_CONSOLE,$(CC) ${CFLAGS} $3 -o $1 $2,linking   \033[1m$1\033[0m)
 endef
 
 define STD_COMPILING
-	@$(call LOG_TO_CONSOLE, $(CC) ${CFLAGS} $3 -c -o $1 $2, compiling \033[1m$1\033[0m)
+	@$(call LOG_TO_CONSOLE,$(CC) ${CFLAGS} $3 -c -o $1 $2,compiling \033[1m$1\033[0m)
 endef 
 
 define STD_CLANG
@@ -22,6 +22,6 @@ endef
 
 define STD_CPPLINT
 	@for f in $(2); do \
-		$(call LOG_TO_CONSOLE, $(1) $$f, cpplint \033[1m$$f\033[0m); \
+		$(call LOG_TO_CONSOLE,$(1) $$f,cpplint \033[1m$$f\033[0m); \
 	done
 endef 

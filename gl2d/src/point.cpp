@@ -1,9 +1,9 @@
 #include "gl2d/include/point.h"
 
 #include "gl2d/include/util.h"
+#include "gl2d/include/vector.h"
 
 namespace gl2d {
-
 
 Point::Point(double x, double y) : x_(x), y_(y) {}
 
@@ -21,6 +21,12 @@ double Point::y() const {
 
 void Point::y(double y) {
   y_ = y;
+}
+
+Point& Point::Translate(const Vector& v) {
+  x_ += v.x();
+  y_ += v.y();
+  return *this;
 }
 
 Point& Point::operator+=(const Point& p) {
@@ -88,6 +94,5 @@ bool Point::operator==(const Point& p) const {
 bool Point::operator!=(const Point& p) const {
   return !(*this == p);
 }
-
 
 }  // namespace gl2d
