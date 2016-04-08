@@ -4,6 +4,19 @@
 namespace gl2d {
 
 class RadiansTest : public ::testing::Test {
+ protected:
+  const double kPiDouble = 3.14159265359;
+  const double k2PiDouble = 2 * kPiDouble;
+
+  Radians kPiRadians;
+  Radians k2PiRadians;
+
+ public:
+  RadiansTest() {
+    kPiRadians.radians_ = kPiDouble;
+    k2PiRadians.radians_ = k2PiDouble;
+  }
+  ~RadiansTest() = default;
 };
 
 TEST_F(RadiansTest, Constructor) {
@@ -18,78 +31,95 @@ TEST_F(RadiansTest, Getters) {
 TEST_F(RadiansTest, Setters) {
 }
 
+TEST_F(RadiansTest, Normalize) {
+  Radians r1(kPiDouble);
+  Radians r2(-kPiDouble);
+  Radians r3(k2PiDouble);
+  Radians r4(-k2PiDouble);
+  Radians r5(k2PiDouble * 5);
+  Radians r6(-k2PiDouble * 5);
+  Radians r7(k2PiDouble * 5 + kPiDouble);
+  Radians r8(-k2PiDouble * 5 - kPiDouble);
+
+  r1.Normalize();
+  r2.Normalize();
+  r3.Normalize();
+  r4.Normalize();
+  r5.Normalize();
+  r6.Normalize();
+  r7.Normalize();
+  r8.Normalize();
+
+  EXPECT_NEAR(r1.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r2.radians_, -kPiDouble, 1e-10);
+  EXPECT_NEAR(r3.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r4.radians_, -k2PiDouble, 1e-10);
+  EXPECT_NEAR(r5.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r6.radians_, -k2PiDouble, 1e-10);
+  EXPECT_NEAR(r7.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r8.radians_, -kPiDouble, 1e-10);
+}
+
 TEST_F(RadiansTest, Addition) {
-  double pi = 3.14159265359;
-  double twopi = 2 * pi;
+  Radians r1 = kPiRadians + kPiRadians;
+  Radians r2 = kPiRadians + kPiDouble;
+  Radians r3 = kPiDouble + kPiRadians;
+  Radians r4 = +k2PiRadians;
+  Radians r5(kPiDouble);
+  r5 += kPiRadians;
+  Radians r6(kPiDouble);
+  r6 += kPiDouble;
 
-  Radians r1 = Radians::PI + Radians::PI;
-  Radians r2 = Radians::PI + pi;
-  Radians r3 = pi + Radians::PI;
-  Radians r4 = +Radians::TWOPI;
-  Radians r5(pi);
-  r5 += Radians::PI;
-  Radians r6(pi);
-  r6 += pi;
-
-  EXPECT_NEAR(r1.radians_, twopi, 1e-10);
-  EXPECT_NEAR(r2.radians_, twopi, 1e-10);
-  EXPECT_NEAR(r3.radians_, twopi, 1e-10);
-  EXPECT_NEAR(r4.radians_, twopi, 1e-10);
-  EXPECT_NEAR(r5.radians_, twopi, 1e-10);
-  EXPECT_NEAR(r6.radians_, twopi, 1e-10);
+  EXPECT_NEAR(r1.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r2.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r3.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r4.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r5.radians_, k2PiDouble, 1e-10);
+  EXPECT_NEAR(r6.radians_, k2PiDouble, 1e-10);
 }
 
 TEST_F(RadiansTest, Subtraction) {
-  double pi = 3.14159265359;
-  double twopi = 2 * pi;
+  Radians r1 = k2PiRadians - kPiRadians;
+  Radians r2 = k2PiRadians - kPiDouble;
+  Radians r3 = k2PiDouble - kPiRadians;
+  Radians r4 = -kPiRadians;
+  Radians r5(k2PiDouble);
+  r5 -= kPiRadians;
+  Radians r6(k2PiDouble);
+  r6 -= kPiDouble;
 
-  Radians r1 = Radians::TWOPI - Radians::PI;
-  Radians r2 = Radians::TWOPI - pi;
-  Radians r3 = twopi - Radians::PI;
-  Radians r4 = -Radians::PI;
-  Radians r5(twopi);
-  r5 -= Radians::PI;
-  Radians r6(twopi);
-  r6 -= pi;
-
-  EXPECT_NEAR(r1.radians_, pi, 1e-10);
-  EXPECT_NEAR(r2.radians_, pi, 1e-10);
-  EXPECT_NEAR(r3.radians_, pi, 1e-10);
-  EXPECT_NEAR(r4.radians_, -pi, 1e-10);
-  EXPECT_NEAR(r5.radians_, pi, 1e-10);
-  EXPECT_NEAR(r6.radians_, pi, 1e-10);
+  EXPECT_NEAR(r1.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r2.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r3.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r4.radians_, -kPiDouble, 1e-10);
+  EXPECT_NEAR(r5.radians_, kPiDouble, 1e-10);
+  EXPECT_NEAR(r6.radians_, kPiDouble, 1e-10);
 }
 
 TEST_F(RadiansTest, Product) {
-  double pi = 3.14159265359;
-  double twopi = 2 * pi;
+  Radians r1 = kPiRadians * k2PiDouble;
+  Radians r2 = k2PiDouble * kPiRadians;
+  Radians r3 = kPiRadians * k2PiRadians;
+  Radians r4(k2PiDouble);
+  r4 *= kPiDouble;
+  Radians r5(k2PiDouble);
+  r5 *= kPiRadians;
 
-  Radians r1 = Radians::PI * twopi;
-  Radians r2 = twopi * Radians::PI;
-  Radians r3 = Radians::PI * Radians::TWOPI;
-  Radians r4(twopi);
-  r4 *= pi;
-  Radians r5(twopi);
-  r5 *= Radians::PI;
-
-  EXPECT_NEAR(r1.radians_, twopi * pi, 1e-10);
-  EXPECT_NEAR(r2.radians_, twopi * pi, 1e-10);
-  EXPECT_NEAR(r3.radians_, twopi * pi, 1e-10);
-  EXPECT_NEAR(r4.radians_, twopi * pi, 1e-10);
-  EXPECT_NEAR(r5.radians_, twopi * pi, 1e-10);
+  EXPECT_NEAR(r1.radians_, k2PiDouble * kPiDouble, 1e-10);
+  EXPECT_NEAR(r2.radians_, k2PiDouble * kPiDouble, 1e-10);
+  EXPECT_NEAR(r3.radians_, k2PiDouble * kPiDouble, 1e-10);
+  EXPECT_NEAR(r4.radians_, k2PiDouble * kPiDouble, 1e-10);
+  EXPECT_NEAR(r5.radians_, k2PiDouble * kPiDouble, 1e-10);
 }
 
 TEST_F(RadiansTest, Division) {
-  double pi = 3.14159265359;
-  double twopi = 2 * pi;
-
-  Radians r1 = Radians::PI / twopi;
-  Radians r2 = pi / Radians::TWOPI;
-  Radians r3 = Radians::PI / Radians::TWOPI;
-  Radians r4(pi);
-  r4 /= twopi;
-  Radians r5(pi);
-  r5 /= Radians::TWOPI;
+  Radians r1 = kPiRadians / k2PiDouble;
+  Radians r2 = kPiDouble / k2PiRadians;
+  Radians r3 = kPiRadians / k2PiRadians;
+  Radians r4(kPiDouble);
+  r4 /= k2PiDouble;
+  Radians r5(kPiDouble);
+  r5 /= k2PiRadians;
 
   EXPECT_NEAR(r1.radians_, 0.5, 1e-10);
   EXPECT_NEAR(r2.radians_, 0.5, 1e-10);
@@ -99,27 +129,25 @@ TEST_F(RadiansTest, Division) {
 }
 
 TEST_F(RadiansTest, EqualOperator) {
-  // TODO
+  // TODO(user)
 }
 
 TEST_F(RadiansTest, NotEqualOperator) {
-  // TODO
+  // TODO(user)
 }
 
 TEST_F(RadiansTest, DoubleAssignment) {
-  double pi = 3.14159265359;
-
   Radians rad;
-  rad = pi;
+  rad = kPiDouble;
 
-  EXPECT_NEAR(rad.radians_, pi, 1e-10);
+  EXPECT_NEAR(rad.radians_, kPiDouble, 1e-10);
 }
 
 TEST_F(RadiansTest, Cosine) {
-  Radians r1 = Radians::PI * 0;
-  Radians r2 = Radians::PI * 0.5;
-  Radians r3 = Radians::PI * 1;
-  Radians r4 = Radians::PI * 1.5;
+  Radians r1(kPiDouble * 0);
+  Radians r2(kPiDouble * 0.5);
+  Radians r3(kPiDouble * 1);
+  Radians r4(kPiDouble * 1.5);
 
   double answer1 = 1;
   double answer2 = 0;
@@ -133,10 +161,10 @@ TEST_F(RadiansTest, Cosine) {
 }
 
 TEST_F(RadiansTest, Sine) {
-  Radians r1 = Radians::PI * 0;
-  Radians r2 = Radians::PI * 0.5;
-  Radians r3 = Radians::PI * 1;
-  Radians r4 = Radians::PI * 1.5;
+  Radians r1(kPiDouble * 0);
+  Radians r2(kPiDouble * 0.5);
+  Radians r3(kPiDouble * 1);
+  Radians r4(kPiDouble * 1.5);
 
   double answer1 = 0;
   double answer2 = 1;
@@ -147,6 +175,34 @@ TEST_F(RadiansTest, Sine) {
   EXPECT_NEAR(Radians::Sin(r2), answer2, 1e-10);
   EXPECT_NEAR(Radians::Sin(r3), answer3, 1e-10);
   EXPECT_NEAR(Radians::Sin(r4), answer4, 1e-10);
+}
+
+TEST_F(RadiansTest, ArcCosine) {
+  double value1 = 1;
+  double value2 = 0.70710678118;
+  double value3 = 0;
+  double value4 = -0.70710678118;
+  double value5 = -1;
+
+  EXPECT_NEAR(0. / 4 * kPiDouble, Radians::Acos(value1).radians_, 1e-10);
+  EXPECT_NEAR(1. / 4 * kPiDouble, Radians::Acos(value2).radians_, 1e-10);
+  EXPECT_NEAR(2. / 4 * kPiDouble, Radians::Acos(value3).radians_, 1e-10);
+  EXPECT_NEAR(3. / 4 * kPiDouble, Radians::Acos(value4).radians_, 1e-10);
+  EXPECT_NEAR(4. / 4 * kPiDouble, Radians::Acos(value5).radians_, 1e-10);
+}
+
+TEST_F(RadiansTest, ArcSine) {
+  double value1 = 1;
+  double value2 = 0.70710678118;
+  double value3 = 0;
+  double value4 = -0.70710678118;
+  double value5 = -1;
+
+  EXPECT_NEAR(2. / 4 * kPiDouble, Radians::Asin(value1).radians_, 1e-10);
+  EXPECT_NEAR(1. / 4 * kPiDouble, Radians::Asin(value2).radians_, 1e-10);
+  EXPECT_NEAR(0. / 4 * kPiDouble, Radians::Asin(value3).radians_, 1e-10);
+  EXPECT_NEAR(-1. / 4 * kPiDouble, Radians::Asin(value4).radians_, 1e-10);
+  EXPECT_NEAR(-2. / 4 * kPiDouble, Radians::Asin(value5).radians_, 1e-10);
 }
 
 }  // namespace gl2d

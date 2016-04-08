@@ -4,6 +4,15 @@ namespace gl2d {
 
 Radians::Radians(double radians) : radians_(radians) {}
 
+Radians& Radians::Normalize() {
+  const double twopi = Radians::TWOPI.radians_;
+
+  while (util::cmpD(radians_, -twopi) < 0) radians_ += twopi;
+  while (util::cmpD(radians_,  twopi) > 0) radians_ -= twopi;
+
+  return *this;
+}
+
 Radians& Radians::operator*=(double k) {
   radians_ *= k;
   return *this;
@@ -145,6 +154,14 @@ double Radians::Cos(const Radians& radians) {
 
 double Radians::Sin(const Radians& radians) {
   return sin(radians.radians_);
+}
+
+Radians Radians::Acos(double value) {
+  return Radians(acos(value));
+}
+
+Radians Radians::Asin(double value) {
+  return Radians(asin(value));
 }
 
 const Radians Radians::PI(3.14159265358979323846264338327950288419716939937510);
