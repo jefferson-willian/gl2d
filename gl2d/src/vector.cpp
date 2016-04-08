@@ -41,7 +41,7 @@ Vector& Vector::Normalize() {
 }
 
 Radians Vector::Angle() const {
-  Radians angle(acos(dest_.x() / Magnitude()));
+  Radians angle = Radians::Acos(dest_.x() / Magnitude());
   if (util::cmpD(dest_.y(), 0) < 0)
     angle = 2 * Radians::PI - angle;
   return angle;
