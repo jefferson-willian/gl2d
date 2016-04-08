@@ -41,6 +41,7 @@ class Point {
   Point& operator/=(double k);
 
   friend Point operator+(const Point& p, const Point& q);
+  friend Point operator+(const Point& p);
   friend Point operator-(const Point& p, const Point& q);
   friend Point operator-(const Point& p);
   friend Point operator*(const Point& p, double k);
@@ -50,8 +51,14 @@ class Point {
   bool operator==(const Point& p) const;
   bool operator!=(const Point& p) const;
 
+  // Friend test classes.
   FRIEND_TEST(PointTest, Constructor);
   FRIEND_TEST(PointTest, Setters);
+  FRIEND_TEST(PointTest, Translation);
+  FRIEND_TEST(PointTest, Addition);
+  FRIEND_TEST(PointTest, Subtraction);
+  FRIEND_TEST(PointTest, Multiplication);
+  FRIEND_TEST(PointTest, Division);
 };
 
 }  // namespace gl2d

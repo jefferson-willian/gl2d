@@ -59,6 +59,10 @@ Point operator+(const Point& p, const Point& q) {
   return t;
 }
 
+Point operator+(const Point& p) {
+  return p;
+}
+
 Point operator-(const Point& p, const Point& q) {
   Point t = p;
   t -= q;
