@@ -10,7 +10,7 @@ class Radians {
   double radians_;
 
  public:
-  explicit Radians();
+  Radians();
   explicit Radians(double radians);
   ~Radians() = default;
 
