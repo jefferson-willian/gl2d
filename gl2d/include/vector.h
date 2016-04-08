@@ -1,12 +1,8 @@
 #ifndef GL2D_INCLUDE_VECTOR_H_
 #define GL2D_INCLUDE_VECTOR_H_
 
-#include <cmath>
-#include <istream>
-#include <ostream>
-
-#include "gl2d/include/radians.h"
 #include "gl2d/include/point.h"
+#include "gl2d/include/radians.h"
 #include "gtest/gtest.h"
 
 namespace gl2d {
@@ -41,19 +37,19 @@ class Vector {
   // Get the vector destination point.
   const ::gl2d::Point& Point() const;
 
-  // Set the vector destination point.
-  void Point(const ::gl2d::Point& dest);
-
   // Get the vector magnitude.
   double Magnitude() const;
 
   // Normalize vector.
   Vector& Normalize();
 
+  // Returns the vector's angle.
   Radians Angle() const;
 
+  // Rotate the vector |angle| radians.
   Vector& Rotate(const Radians& angle);
 
+  // Mathematical operators.
   Vector& operator+=(const Vector& v);
   Vector& operator-=(const Vector& v);
   Vector& operator*=(double k);

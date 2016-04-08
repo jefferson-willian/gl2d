@@ -3,6 +3,7 @@
 
 namespace util {
 
+// Compare two doubles with 1e-10 decimal precision.
 int cmpD(double a, double b);
 
 }  // namespace util

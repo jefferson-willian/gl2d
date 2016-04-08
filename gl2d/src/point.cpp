@@ -4,6 +4,7 @@
 
 namespace gl2d {
 
+
 Point::Point(double x, double y) : x_(x), y_(y) {}
 
 double Point::x() const {
@@ -87,5 +88,6 @@ bool Point::operator==(const Point& p) const {
 bool Point::operator!=(const Point& p) const {
   return !(*this == p);
 }
+
 
 }  // namespace gl2d

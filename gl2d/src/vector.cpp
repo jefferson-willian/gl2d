@@ -12,14 +12,6 @@ Vector::Vector(const ::gl2d::Point& dest) : dest_(dest) {}
 Vector::Vector(const ::gl2d::Point& orig, const ::gl2d::Point& dest) :
     dest_(dest - orig) {}
 
-const ::gl2d::Point& Vector::Point() const {
-    return dest_;
-}
-
-void Vector::Point(const ::gl2d::Point& dest) {
-    dest_ = dest;
-}
-
 double Vector::x() const {
     return dest_.x();
 }
@@ -34,6 +26,10 @@ void Vector::y(double y) {
 
 double Vector::y() const {
     return dest_.y();
+}
+
+const ::gl2d::Point& Vector::Point() const {
+    return dest_;
 }
 
 double Vector::Magnitude() const {

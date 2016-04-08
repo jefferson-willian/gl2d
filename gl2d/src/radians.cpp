@@ -6,6 +6,10 @@ Radians::Radians() : radians_(0) {}
 
 Radians::Radians(double radians) : radians_(radians) {}
 
+Radians::operator double() const {
+  return radians_;
+}
+
 Radians& Radians::operator=(double k) {
   radians_ = k;
   return *this;

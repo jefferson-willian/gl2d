@@ -5,6 +5,7 @@
 
 namespace gl2d {
 
+
 class Point {
  protected:
   // x-coordinate.
@@ -28,6 +29,7 @@ class Point {
   // Set y-coordinate.
   void y(double y);
 
+  // Mathematical operators.
   Point& operator+=(const Point& p);
   Point& operator-=(const Point& p);
   Point& operator*=(double k);

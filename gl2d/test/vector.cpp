@@ -45,20 +45,12 @@ TEST_F(VectorTest, Setters) {
   double x1 = 2.3;
   double y1 = -4.5;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
-
   Vector v1(1, 0);
   v1.x(x1);
   v1.y(y1);
 
-  Vector v2(1, 0);
-  const Point p(x2, y2);
-  v2.Point(p);
-
   EXPECT_DOUBLE_EQ(x1, v1.dest_.x());
   EXPECT_DOUBLE_EQ(y1, v1.dest_.y());
-  EXPECT_EQ(p, v2.dest_);
 }
 
 TEST_F(VectorTest, Magnitude) {
