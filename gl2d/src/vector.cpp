@@ -1,8 +1,7 @@
 #include "gl2d/include/vector.h"
 
-#include <cmath>
-
 #include "gl2d/include/point.h"
+#include "gl2d/include/radians.h"
 #include "gl2d/include/util.h"
 
 namespace gl2d {
@@ -74,6 +73,10 @@ Vector& Vector::operator*=(double k) {
 Vector& Vector::operator/=(double k) {
   dest_ /= k;
   return *this;
+}
+
+Vector operator+(const Vector& v) {
+  return v;
 }
 
 Vector operator+(const Vector& v, const Vector& w) {

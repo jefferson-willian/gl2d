@@ -55,6 +55,7 @@ class Vector {
   Vector& operator*=(double k);
   Vector& operator/=(double k);
 
+  friend Vector operator+(const Vector& v);
   friend Vector operator+(const Vector& v, const Vector& w);
   friend Vector operator-(const Vector& v, const Vector& w);
   friend Vector operator-(const Vector& v);
@@ -69,8 +70,16 @@ class Vector {
   static const Vector i;
   static const Vector j;
 
+  // Friend test classes.
   FRIEND_TEST(VectorTest, Constructor);
   FRIEND_TEST(VectorTest, Setters);
+  FRIEND_TEST(VectorTest, Normalize);
+  FRIEND_TEST(VectorTest, Rotation);
+  FRIEND_TEST(VectorTest, Addition);
+  FRIEND_TEST(VectorTest, Subtraction);
+  FRIEND_TEST(VectorTest, ScalarProduct);
+  FRIEND_TEST(VectorTest, ScalarDivision);
+  FRIEND_TEST(VectorTest, Canonical);
 };
 
 }  // namespace gl2d
