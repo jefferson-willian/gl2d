@@ -1,5 +1,6 @@
 #include "gl2d/include/util.h"
 
+namespace gl2d {
 namespace util {
 
 #define EPS 1e-10
@@ -9,3 +10,4 @@ int cmpD(double a, double b) {
 }
 
 }  // namespace util
+}  // namespace gl2d
