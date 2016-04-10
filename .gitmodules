@@ -1,0 +1,3 @@
+[submodule "gl2d/external/googletest"]
+	path = gl2d/external/googletest
+	url = https://github.com/google/googletest.git
