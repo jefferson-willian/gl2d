@@ -41,7 +41,7 @@ run-tests: bin/tester
 
 bin/tester: $(TEST_OBJ) $(BUILD_OBJ)
 	@mkdir -p bin
-	$(call STD_LINKING, $@, $^ ${GTEST_DIR}/libgtest.a ${GMOCK_DIR}/libgmock.a, -lpthread)
+	$(call STD_LINKING, $@, $^ ${GTEST_DIR}/libgtest.a, -lpthread)
 
 test/build/%.o: test/%.cpp
 	@mkdir -p test/build
