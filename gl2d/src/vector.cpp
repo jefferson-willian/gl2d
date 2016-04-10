@@ -56,12 +56,12 @@ Vector& Vector::Rotate(const Radians& angle) {
 }
 
 Vector& Vector::operator+=(const Vector& v) {
-  dest_ += v.Point();
+  dest_ += v.dest_;
   return *this;
 }
 
 Vector& Vector::operator-=(const Vector& v) {
-  dest_ -= v.Point();
+  dest_ -= v.dest_;
   return *this;
 }
 
@@ -92,7 +92,7 @@ Vector operator-(const Vector& v, const Vector& w) {
 }
 
 Vector operator-(const Vector& v) {
-  return Vector(-v.Point());
+  return Vector(-v.x(), -v.y());
 }
 
 Vector operator*(const Vector& v, double k) {
@@ -114,11 +114,11 @@ Vector operator/(const Vector& v, double k) {
 }
 
 bool Vector::operator==(const Vector& v) const {
-  return dest_ == v.Point();
+  return dest_ == v.dest_;
 }
 
 bool Vector::operator!=(const Vector& v) const {
-  return !(*this == v);
+  return dest_ != v.dest_;
 }
 
 const Vector Vector::i = Vector(1, 0);

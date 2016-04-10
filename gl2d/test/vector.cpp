@@ -6,184 +6,155 @@
 namespace gl2d {
 
 class VectorTest : public ::testing::Test {
+ protected:
+  double kX1, kY1;
+  double kX2, kY2;
+  double kX3, kY3;
+  double kX4, kY4;
+  double kX5, kY5;
+  double kX6, kY6;
+  double kX7, kY7;
+
+  Vector kV1;
+  Vector kV2;
+  Vector kV3;
+  Vector kV4;
+  Vector kV5;
+  Vector kV6;
+  Vector kV7;
+
+  VectorTest() {
+    kX1 = 2.3;
+    kY1 = -4.5;
+    kV1.dest_ = Point(kX1, kY1);
+    kX2 = 1.3;
+    kY2 = 5.5;
+    kV2.dest_ = Point(kX2, kY2);
+    kX3 = 3;
+    kY3 = -4;
+    kV3.dest_ = Point(kX3, kY3);
+    kX4 = 0;
+    kY4 = 3;
+    kV4.dest_ = Point(kX4, kY4);
+    kX5 = -3;
+    kY5 = 0;
+    kV5.dest_ = Point(kX5, kY5);
+    kX6 = 0;
+    kY6 = -3;
+    kV6.dest_ = Point(kX6, kY6);
+    kX7 = 3;
+    kY7 = 0;
+    kV7.dest_ = Point(kX7, kY7);
+  }
 };
 
 TEST_F(VectorTest, Constructor) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  const Vector v1(kX1, kY1);
+  const Vector v2(Point(kX1, kY1));
+  const Vector v3(Point(kX1, kY1), Point(kX2, kY2));
 
-  double x2 = 1.3;
-  double y2 = 5.5;
-
-  const Vector v1(x1, y1);
-  const Vector v2(Point(x1, y1));
-  const Vector v3(Point(x1, y1), Point(x2, y2));
-
-  EXPECT_EQ(v1.dest_, Point(x1, y1));
-  EXPECT_EQ(v2.dest_, Point(x1, y1));
-  EXPECT_EQ(v3.dest_, Point(x2 - x1, y2 - y1));
+  EXPECT_EQ(v1.dest_, Point(kX1, kY1));
+  EXPECT_EQ(v2.dest_, Point(kX1, kY1));
+  EXPECT_EQ(v3.dest_, Point(kX2 - kX1, kY2 - kY1));
 }
 
 TEST_F(VectorTest, Getters) {
-  double x = 2.3;
-  double y = -4.5;
-
-  const Vector v(x, y);
-
-  EXPECT_NEAR(x, v.x(), 1e-10);
-  EXPECT_NEAR(y, v.y(), 1e-10);
-  EXPECT_EQ(Point(x, y), v.Point());
+  EXPECT_NEAR(kX1, kV1.x(), 1e-10);
+  EXPECT_NEAR(kY1, kV1.y(), 1e-10);
+  EXPECT_EQ(Point(kX1, kY1), kV1.Point());
 }
 
 TEST_F(VectorTest, Setters) {
-  double x = 2.3;
-  double y = -4.5;
+  Vector v;
+  v.x(kX1);
+  v.y(kY1);
 
-  Vector v(1, 0);
-  v.x(x);
-  v.y(y);
-
-  EXPECT_EQ(Point(x, y), v.dest_);
+  EXPECT_EQ(Point(kX1, kY1), v.dest_);
 }
 
 TEST_F(VectorTest, Magnitude) {
-  Vector v(3, -4);
-
-  EXPECT_NEAR(v.Magnitude(), 5, 1e-10);
+  EXPECT_NEAR(kV3.Magnitude(), 5, 1e-10);
 }
 
 TEST_F(VectorTest, Normalize) {
-  Vector v(3, -4);
-  v.Normalize();
-
-  EXPECT_EQ(v.dest_, Point(0.6, -0.8));
+  EXPECT_EQ(kV3.Normalize().dest_, Point(0.6, -0.8));
 }
 
 TEST_F(VectorTest, Angle) {
-  const Vector v1(3, 0);
-  const Vector v2(3, 3);
-  const Vector v3(0, 3);
-  const Vector v4(-3, 3);
-  const Vector v5(-3, 0);
-  const Vector v6(-3, -3);
-  const Vector v7(0, -3);
-  const Vector v8(3, -3);
-
-  EXPECT_EQ(v1.Angle(), 0/4. * Radians::PI);
-  EXPECT_EQ(v2.Angle(), 1/4. * Radians::PI);
-  EXPECT_EQ(v3.Angle(), 2/4. * Radians::PI);
-  EXPECT_EQ(v4.Angle(), 3/4. * Radians::PI);
-  EXPECT_EQ(v5.Angle(), 4/4. * Radians::PI);
-  EXPECT_EQ(v6.Angle(), 5/4. * Radians::PI);
-  EXPECT_EQ(v7.Angle(), 6/4. * Radians::PI);
-  EXPECT_EQ(v8.Angle(), 7/4. * Radians::PI);
+  EXPECT_EQ(kV4.Angle(), 1 / 2. * Radians::PI);
+  EXPECT_EQ(kV5.Angle(), 2 / 2. * Radians::PI);
+  EXPECT_EQ(kV6.Angle(), 3 / 2. * Radians::PI);
+  EXPECT_EQ(kV7.Angle(), 0 / 2. * Radians::PI);
 }
 
 TEST_F(VectorTest, Rotation) {
-  const Vector v1(0, 3);
-  const Vector v2(-3, 0);
-  const Vector v3(0, -3);
-  const Vector v4(3, 0);
+  Vector v1 = kV7;
+  Vector v2 = kV7;
+  Vector v3 = kV7;
+  Vector v4 = kV7;
 
-  Radians d90(Radians::PI / 2);
-
-  Vector v(3, 0);
-
-  v.Rotate(d90);
-  EXPECT_EQ(v1.dest_, v.dest_);
-
-  v.Rotate(d90);
-  EXPECT_EQ(v2.dest_, v.dest_);
-
-  v.Rotate(d90);
-  EXPECT_EQ(v3.dest_, v.dest_);
-
-  v.Rotate(d90);
-  EXPECT_EQ(v4.dest_, v.dest_);
+  EXPECT_EQ(v1.Rotate(1 / 2. * Radians::PI), kV4);
+  EXPECT_EQ(v2.Rotate(2 / 2. * Radians::PI), kV5);
+  EXPECT_EQ(v3.Rotate(3 / 2. * Radians::PI), kV6);
+  EXPECT_EQ(v4.Rotate(4 / 2. * Radians::PI), kV7);
 }
 
 TEST_F(VectorTest, Addition) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  const Vector v1 = kV1 + kV2;
+  const Vector v2 = +kV1;
+  Vector v3 = kV1;
+  v3 += kV2;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
-
-  const Vector v1 = Vector(x1, y1) + Vector(x2, y2);
-  const Vector v2 = +v1;
-  Vector v3 = Vector(x1, y1);
-  v3 += Vector(x2, y2);
-
-  EXPECT_EQ(Point(x1 + x2, y1 + y2), v1.dest_);
-  EXPECT_EQ(Point(x1 + x2, y1 + y2), v2.dest_);
-  EXPECT_EQ(Point(x1 + x2, y1 + y2), v3.dest_);
+  EXPECT_EQ(Point(kX1 + kX2, kY1 + kY2), v1.dest_);
+  EXPECT_EQ(Point(kX1, kY1), v2.dest_);
+  EXPECT_EQ(Point(kX1 + kX2, kY1 + kY2), v3.dest_);
 }
 
 TEST_F(VectorTest, Subtraction) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  const Vector v1 = kV1 - kV2;
+  const Vector v2 = -kV1;
+  Vector v3 = kV1;
+  v3 -= kV2;
 
-  double x2 = 1.3;
-  double y2 = 5.5;
-
-  const Vector v1 = Vector(x1, y1) - Vector(x2, y2);
-  const Vector v2 = -v1;
-  Vector v3 = Vector(x1, y1);
-  v3 -= Vector(x2, y2);
-
-  EXPECT_EQ(Point(x1 - x2, y1 - y2), v1.dest_);
-  EXPECT_EQ(Point(x2 - x1, y2 - y1), v2.dest_);
-  EXPECT_EQ(Point(x1 - x2, y1 - y2), v3.dest_);
+  EXPECT_EQ(Point(kX1 - kX2, kY1 - kY2), v1.dest_);
+  EXPECT_EQ(Point(-kX1, -kY1), v2.dest_);
+  EXPECT_EQ(Point(kX1 - kX2, kY1 - kY2), v3.dest_);
 }
 
 TEST_F(VectorTest, ScalarProduct) {
-  double x = 2.3;
-  double y = -4.5;
-
   double k = 3.5;
 
-  const Vector v1 = Vector(x, y) * k;
-  const Vector v2 = k * Vector(x, y);
-  Vector v3 = Vector(x, y);
+  const Vector v1 = kV1 * k;
+  const Vector v2 = k * kV1;
+  Vector v3 = kV1;
   v3 *= k;
 
-  EXPECT_EQ(Point(x * k, y * k), v1.dest_);
-  EXPECT_EQ(Point(x * k, y * k), v2.dest_);
-  EXPECT_EQ(Point(x * k, y * k), v3.dest_);
+  EXPECT_EQ(Point(kX1 * k, kY1 * k), v1.dest_);
+  EXPECT_EQ(Point(kX1 * k, kY1 * k), v2.dest_);
+  EXPECT_EQ(Point(kX1 * k, kY1 * k), v3.dest_);
 }
 
 TEST_F(VectorTest, ScalarDivision) {
-  double x = 2.3;
-  double y = -4.5;
-
   double k = 3.5;
 
-  const Vector v1 = Vector(x, y) / k;
-  Vector v2 = Vector(x, y);
+  const Vector v1 = kV1 / k;
+  Vector v2 = kV1;
   v2 /= k;
 
-  EXPECT_EQ(Point(x / k, y / k), v1.dest_);
-  EXPECT_EQ(Point(x / k, y / k), v2.dest_);
+  EXPECT_EQ(Point(kX1 / k, kY1 / k), v1.dest_);
+  EXPECT_EQ(Point(kX1 / k, kY1 / k), v2.dest_);
 }
 
 TEST_F(VectorTest, EqualOperator) {
-  const Vector v1(2.3, -4.5);
-  const Vector v2(1.3, -4.5);
-  const Vector v3(2.3, -2.5);
-
-  EXPECT_TRUE(v1 == v1);
-  EXPECT_FALSE(v1 == v2);
-  EXPECT_FALSE(v1 == v3);
+  EXPECT_TRUE(kV1 == kV1);
+  EXPECT_FALSE(kV4 == kV6);
+  EXPECT_FALSE(kV5 == kV7);
 }
 
 TEST_F(VectorTest, NotEqualOperator) {
-  const Vector v1(2.3, -4.5);
-  const Vector v2(1.3, -4.5);
-  const Vector v3(2.3, -2.5);
-
-  EXPECT_FALSE(v1 != v1);
-  EXPECT_TRUE(v1 != v2);
-  EXPECT_TRUE(v1 != v3);
+  EXPECT_FALSE(kV1 != kV1);
+  EXPECT_TRUE(kV4 != kV6);
+  EXPECT_TRUE(kV5 != kV7);
 }
 
 TEST_F(VectorTest, Canonical) {

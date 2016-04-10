@@ -20,6 +20,7 @@ class Vector {
   // Creates a vector that has origin in |orig| and destination in |dest|, then
   // the vector is translated to the origin (0,0).
   explicit Vector(const ::gl2d::Point& orig, const ::gl2d::Point& dest);
+  Vector() = default;
   ~Vector() = default;
 
   // Get x-coordinate.
@@ -71,6 +72,7 @@ class Vector {
   static const Vector j;
 
   // Friend test classes.
+  friend class VectorTest;
   FRIEND_TEST(VectorTest, Constructor);
   FRIEND_TEST(VectorTest, Setters);
   FRIEND_TEST(VectorTest, Normalize);
