@@ -6,91 +6,90 @@
 namespace gl2d {
 
 class CircleTest : public ::testing::Test {
+ protected:
+  Circle circle0_;
+  Circle circle1_;
+  Circle circle2_;
+
+  virtual void SetUp() {
+    circle0_.center_ = Point(2.3, -4.5);
+    circle0_.radius_ = 2.5;
+
+    circle1_.center_ = Point(5.2, 1.5);
+    circle1_.radius_ = 2.5;
+
+    circle2_.center_ = Point(2.3, -4.5);
+    circle2_.radius_ = 1;
+  }
+
+  virtual void ExpectEqual(const Circle& c1, const Circle& c2) {
+    EXPECT_EQ(c1.center_, c2.center_);
+    EXPECT_NEAR(c1.radius_, c2.radius_, 1e-10);
+  }
+
+  virtual void AssertEqual(const Circle& c1, const Circle& c2) {
+    ASSERT_EQ(c1.center_, c2.center_);
+    ASSERT_NEAR(c1.radius_, c2.radius_, 1e-10);
+  }
+
+  virtual void AssertAssignment(Circle* c1, const Circle& c2) {
+    ASSERT_FALSE(c1 == nullptr);
+    c1->center_ = c2.center_;
+    c1->radius_ = c2.radius_;
+    AssertEqual(*c1, c2);
+  }
 };
 
 TEST_F(CircleTest, Constructor) {
-  double x = 2.3;
-  double y = -4.5;
-  double r = 2.5;
+  Circle c1(2.3, -4.5, 2.5);
+  Circle c2(Point(2.3, -4.5), 2.5);
 
-  const Point center(x, y);
-
-  const Circle circle1(x, y, r);
-  const Circle circle2(center, r);
-
-  EXPECT_EQ(circle1.center_, center);
-  EXPECT_DOUBLE_EQ(circle1.radius_, r);
-
-  EXPECT_EQ(circle2.center_, center);
-  EXPECT_DOUBLE_EQ(circle2.radius_, r);
+  ExpectEqual(c1, circle0_);
+  ExpectEqual(c2, circle0_);
 }
 
 TEST_F(CircleTest, Getters) {
-  double x = 2.3;
-  double y = -4.5;
-  double r = 2.5;
-
-  const Point center(x, y);
-
-  const Circle circle(center, r);
-
-  EXPECT_EQ(circle.Center(), center);
-  EXPECT_DOUBLE_EQ(circle.Radius(), r);
+  EXPECT_EQ(circle0_.Center(), Point(2.3, -4.5));
+  EXPECT_NEAR(circle0_.Radius(), 2.5, 1e-10);
 }
 
 TEST_F(CircleTest, Setters) {
-  double x = 2.3;
-  double y = -4.5;
-  double r = 2.5;
+  Circle c1;
+  Circle c2;
+  Circle c3;
 
-  const Point center(x, y);
+  AssertAssignment(&c1, circle0_);
+  AssertAssignment(&c2, circle0_);
+  AssertAssignment(&c3, circle0_);
 
-  Circle circle1(0, 0, 0);
-  circle1.Center(center);
-  circle1.Radius(r);
+  c1.Center(5.2, 1.5);
+  ExpectEqual(c1, circle1_);
 
-  Circle circle2(0, 0, 0);
-  circle2.Center(x, y);
-  circle2.Radius(r);
+  c2.Center(Point(5.2, 1.5));
+  ExpectEqual(c2, circle1_);
 
-  EXPECT_EQ(circle1.center_, center);
-  EXPECT_DOUBLE_EQ(circle1.radius_, r);
-
-  EXPECT_EQ(circle2.center_, center);
-  EXPECT_DOUBLE_EQ(circle2.radius_, r);
+  c3.Radius(1);
+  ExpectEqual(c3, circle2_);
 }
 
 TEST_F(CircleTest, Translation) {
-  Circle circle(0, 0, 1);
+  circle0_.Translate(Vector(2.9, 6.0));
 
-  Circle answer1(2, 3, 1);
-  Circle answer2(0, 0, 1);
-
-  circle.Translate(Vector(2, 3));
-  EXPECT_EQ(circle, answer1);
-
-  circle.Translate(Vector(-2, -3));
-  EXPECT_EQ(circle, answer2);
+  ExpectEqual(circle0_, circle1_);
 }
 
 TEST_F(CircleTest, OperatorEqual) {
-  Circle circle1(0, 0, 1);
-  Circle circle2(2, 2, 1);
-  Circle circle3(0, 0, 2);
-
-  EXPECT_TRUE(circle1 == circle1);
-  EXPECT_FALSE(circle1 == circle2);
-  EXPECT_FALSE(circle1 == circle3);
+  EXPECT_TRUE(circle0_ == circle0_);
+  EXPECT_FALSE(circle0_ == circle1_);
+  EXPECT_FALSE(circle0_ == circle2_);
+  EXPECT_FALSE(circle1_ == circle2_);
 }
 
 TEST_F(CircleTest, OperatorNotEqual) {
-  Circle circle1(0, 0, 1);
-  Circle circle2(2, 2, 1);
-  Circle circle3(0, 0, 2);
-
-  EXPECT_TRUE(circle1 != circle2);
-  EXPECT_TRUE(circle1 != circle3);
-  EXPECT_FALSE(circle1 != circle1);
+  EXPECT_FALSE(circle0_ != circle0_);
+  EXPECT_TRUE(circle0_ != circle1_);
+  EXPECT_TRUE(circle0_ != circle2_);
+  EXPECT_TRUE(circle1_ != circle2_);
 }
 
 }  // namespace gl2d
