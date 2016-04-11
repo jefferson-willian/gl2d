@@ -95,11 +95,11 @@ Point operator/(const Point& p, double k) {
 }
 
 bool Point::operator==(const Point& p) const {
-  return util::cmpD(x_, p.x()) == 0 && util::cmpD(y_, p.y()) == 0;
+  return util::cmpD(x_, p.x_) == 0 && util::cmpD(y_, p.y_) == 0;
 }
 
 bool Point::operator!=(const Point& p) const {
-  return util::cmpD(x_, p.x()) != 0 || util::cmpD(y_, p.y()) != 0;
+  return util::cmpD(x_, p.x_) != 0 || util::cmpD(y_, p.y_) != 0;
 }
 
 }  // namespace gl2d

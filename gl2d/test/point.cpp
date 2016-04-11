@@ -6,21 +6,13 @@ namespace gl2d {
 
 class PointTest : public ::testing::Test {
  protected:
-  Point kP1;
-  Point kP2;
-
   Point p0_;
   Point p1_;
   Point p2_;
   Point p3_;
   Point p4_;
   Point p5_;
-
-  double kX1 = 2.3;
-  double kY1 = -4.5;
-
-  double kX2 = 1.3;
-  double kY2 = 5.5;
+  Point p6_;
 
   virtual void SetUp() {
     p0_.x_ = 2.3;
@@ -40,6 +32,9 @@ class PointTest : public ::testing::Test {
 
     p5_.x_ = -2.3;
     p5_.y_ = 4.5;
+
+    p6_.x_ = 2.3 * 3.5;
+    p6_.y_ = -4.5 * 3.5;
   }
 
   virtual void ExpectEqual(const Point& p1, const Point& p2) {
@@ -57,15 +52,6 @@ class PointTest : public ::testing::Test {
     p1->x_ = p2.x_;
     p1->y_ = p2.y_;
     AssertEqual(*p1, p2);
-  }
-
- public:
-  PointTest() {
-    kP1.x_ = kX1;
-    kP1.y_ = kY1;
-
-    kP2.x_ = kX2;
-    kP2.y_ = kY2;
   }
 };
 
@@ -95,7 +81,12 @@ TEST_F(PointTest, Setters) {
 }
 
 TEST_F(PointTest, Translation) {
-  p0_.Translate(Vector(-1, 10));
+  Vector v(-1, 10);
+
+  ASSERT_NEAR(v.x(), -1, 1e-10);
+  ASSERT_NEAR(v.y(), 10, 1e-10);
+
+  p0_.Translate(v);
 
   ExpectEqual(p0_, p3_);
 }
@@ -131,69 +122,42 @@ TEST_F(PointTest, Subtraction) {
 }
 
 TEST_F(PointTest, Multiplication) {
-  double k = 3.5;
+  Point p1;
+  Point p2;
+  Point p3;
 
-  const Point p1 = kP1 * k;
-  const Point p2 = k * kP1;
-  Point p3 = kP1;
-  p3 *= k;
+  AssertAssignment(&p1, p0_ * 3.5);
+  AssertAssignment(&p2, 3.5 * p0_);
+  AssertAssignment(&p3, p0_);
+  p3 *= 3.5;
 
-  EXPECT_NEAR(kX1 * k, p1.x_, 1e-10);
-  EXPECT_NEAR(kY1 * k, p1.y_, 1e-10);
-
-  EXPECT_NEAR(kX1 * k, p2.x_, 1e-10);
-  EXPECT_NEAR(kY1 * k, p2.y_, 1e-10);
-
-  EXPECT_NEAR(kX1 * k, p3.x_, 1e-10);
-  EXPECT_NEAR(kY1 * k, p3.y_, 1e-10);
+  ExpectEqual(p1, p6_);
+  ExpectEqual(p2, p6_);
+  ExpectEqual(p3, p6_);
 }
 
 TEST_F(PointTest, Division) {
-  double k = 3.5;
+  Point p1;
+  Point p2;
 
-  const Point p1 = kP1 / k;
-  Point p2 = kP1;
-  p2 /= k;
+  AssertAssignment(&p1, p6_ / 3.5);
+  AssertAssignment(&p2, p6_);
+  p2 /= 3.5;
 
-  EXPECT_NEAR(kX1 / k, p1.x_, 1e-10);
-  EXPECT_NEAR(kY1 / k, p1.y_, 1e-10);
-
-  EXPECT_NEAR(kX1 / k, p2.x_, 1e-10);
-  EXPECT_NEAR(kY1 / k, p2.y_, 1e-10);
+  ExpectEqual(p1, p0_);
+  ExpectEqual(p2, p0_);
 }
 
 TEST_F(PointTest, OperatorEqual) {
-  Point p1, p2, p3;
-
-  p1.x_ = 2.3;
-  p1.y_ = -4.5;
-
-  p2.x_ = 1.3;
-  p2.y_ = -4.5;
-
-  p3.x_ = 2.3;
-  p3.y_ = -2.5;
-
-  EXPECT_TRUE(p1 == p1);
-  EXPECT_FALSE(p1 == p2);
-  EXPECT_FALSE(p1 == p3);
+  EXPECT_TRUE(p0_ == p0_);
+  EXPECT_FALSE(p0_ == p1_);
+  EXPECT_FALSE(p0_ == p2_);
 }
 
 TEST_F(PointTest, OperatorNotEqual) {
-  Point p1, p2, p3;
-
-  p1.x_ = 2.3;
-  p1.y_ = -4.5;
-
-  p2.x_ = 1.3;
-  p2.y_ = -4.5;
-
-  p3.x_ = 2.3;
-  p3.y_ = -2.5;
-
-  EXPECT_FALSE(p1 != p1);
-  EXPECT_TRUE(p1 != p2);
-  EXPECT_TRUE(p1 != p3);
+  EXPECT_FALSE(p0_ != p0_);
+  EXPECT_TRUE(p0_ != p1_);
+  EXPECT_TRUE(p0_ != p2_);
 }
 
 }  // namespace gl2d
