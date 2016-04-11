@@ -4,168 +4,120 @@
 namespace gl2d {
 
 class LineTest : public ::testing::Test {
+ protected:
+  Line line0_;
+  Line line1_;
+  Line line2_;
+  Line line3_;
+
+  virtual void SetUp() {
+    line0_.n_ = Vector(3, 3).Normalize();
+    line0_.origin_ = Point(2.3, -4.5);
+
+    line1_.n_ = Vector(3, 3).Normalize();
+    line1_.origin_ = Point(5.2, 1.5);
+
+    line2_.n_ = Vector(0, 1).Normalize();
+    line2_.origin_ = Point(2.3, -4.5);
+
+    line3_.n_ = Vector(1, 0).Normalize();
+    line3_.origin_ = Point(2.3, -4.5);
+  }
+
+  virtual void ExpectEqual(const Line& line1, const Line& line2) {
+    EXPECT_EQ(line1.n_, line2.n_);
+    EXPECT_EQ(line1.origin_, line2.origin_);
+  }
+
+  virtual void AssertEqual(const Line& line1, const Line& line2) {
+    ASSERT_EQ(line1.n_, line2.n_);
+    ASSERT_EQ(line1.origin_, line2.origin_);
+  }
+
+  virtual void AssertAssignment(Line* line1, const Line& line2) {
+    ASSERT_FALSE(line1 == nullptr);
+    line1->n_ = line2.n_;
+    line1->origin_ = line2.origin_;
+    AssertEqual(*line1, line2);
+  }
+
 };
 
 TEST_F(LineTest, Constructor) {
-  double x = 2.3;
-  double y = -4.5;
+  Line line1(Vector(1, 1), 2.3, -4.5);
+  Line line2(Vector(1, 1), Point(2.3, -4.5));
 
-  const Point p(x, y);
-  Vector n(3, 3);
-
-  Line line1(n, x, y);
-  Line line2(n, p);
-
-  n.Normalize();
-
-  EXPECT_EQ(line1.n_, n);
-  EXPECT_EQ(line1.origin_, p);
-
-  EXPECT_EQ(line2.n_, n);
-  EXPECT_EQ(line2.origin_, p);
+  ExpectEqual(line1, line0_);
+  ExpectEqual(line2, line0_);
 }
 
 TEST_F(LineTest, Getters) {
-  double x = 2.3;
-  double y = -4.5;
-
-  const Point p(x, y);
-  Vector n(3, 3);
-
-  Line line(n, x, y);
-
-  n.Normalize();
-
-  EXPECT_EQ(line.Normal(), n);
-  EXPECT_EQ(line.Origin(), p);
+  EXPECT_EQ(line0_.Normal(), Vector(3, 3).Normalize());
+  EXPECT_EQ(line0_.Origin(), Point(2.3, -4.5));
 }
 
 TEST_F(LineTest, Setters) {
-  double x = 2.3;
-  double y = -4.5;
+  Line line1;
+  Line line2;
+  Line line3;
 
-  const Point p(x, y);
-  Vector n(3, 3);
+  AssertAssignment(&line1, line0_);
+  AssertAssignment(&line2, line0_);
+  AssertAssignment(&line3, line0_);
 
-  Line line1(Vector::i, 0, 0);
-  Line line2(Vector::i, 0, 0);
+  line1.Origin(Point(5.2, 1.5));
+  ExpectEqual(line1, line1_);
 
-  line1.Normal(n);
-  line1.Origin(p);
+  line2.Origin(5.2, 1.5);
+  ExpectEqual(line2, line1_);
 
-  line2.Normal(n);
-  line2.Origin(x, y);
-
-  n.Normalize();
-
-  EXPECT_EQ(line1.n_, n);
-  EXPECT_EQ(line1.origin_, p);
-
-  EXPECT_EQ(line2.n_, n);
-  EXPECT_EQ(line2.origin_, p);
+  line3.Normal(Vector(0, 3));
+  ExpectEqual(line3, line2_);
 }
 
 TEST_F(LineTest, LineEquation) {
-  double x = 2.3;
-  double y = -4.5;
+  EXPECT_NEAR(line1_.A(), 0.70710678118, 1e-10);
+  EXPECT_NEAR(line1_.B(), 0.70710678118, 1e-10);
+  EXPECT_NEAR(line1_.C(), 4.73761543395, 1e-10);
 
-  const Point p(x, y);
-  Vector n(3, 3);
+  EXPECT_NEAR(line2_.A(), 0, 1e-10);
+  EXPECT_NEAR(line2_.B(), 1, 1e-10);
+  EXPECT_NEAR(line2_.C(), -4.5, 1e-10);
 
-  const Line line1(n, x, y);
-  const Line line2(Vector::i, x, y);
-  const Line line3(Vector::j, x, y);
-
-  n.Normalize();
-
-  EXPECT_DOUBLE_EQ(line1.A(), n.x());
-  EXPECT_DOUBLE_EQ(line1.B(), n.y());
-  EXPECT_DOUBLE_EQ(line1.C(), n.x() * x + n.y() * y);
-
-  EXPECT_DOUBLE_EQ(line2.A(), 1);
-  EXPECT_DOUBLE_EQ(line2.B(), 0);
-  EXPECT_DOUBLE_EQ(line2.C(), x);
-
-  EXPECT_DOUBLE_EQ(line3.A(), 0);
-  EXPECT_DOUBLE_EQ(line3.B(), 1);
-  EXPECT_DOUBLE_EQ(line3.C(), y);
+  EXPECT_NEAR(line3_.A(), 1, 1e-10);
+  EXPECT_NEAR(line3_.B(), 0, 1e-10);
+  EXPECT_NEAR(line3_.C(), 2.3, 1e-10);
 }
 
 TEST_F(LineTest, Translation) {
-  Vector n(3, 3);
-  Vector v(-2, 5);
-
-  double x = 2.3;
-  double y = -4.5;
-
-  Point p(x, y);
-
-  Line line1(n, x, y);
-
-  p.Translate(v);
-
-  Line line2(n, p);
-
-  line1.Translate(v);
-
-  EXPECT_EQ(line1, line2);
+  line0_.Translate(Vector(2.9, 6));
+  ExpectEqual(line0_, line1_);
 }
 
 TEST_F(LineTest, Rotation) {
-  double x = 2.3;
-  double y = -4.5;
+  Line line1;
+  Line line2;
 
-  Point p(x, y);
+  AssertAssignment(&line1, line0_);
+  AssertAssignment(&line2, line0_);
 
-  Line line1(Vector::i, x, y);
+  line1.Rotate(Radians::PI / 4);
+  ExpectEqual(line1, line2_);
 
-  Line line2(Vector::j, p);
-
-  line1.Rotate(Radians::PI / 2);
-
-  EXPECT_EQ(line1, line2);
+  line2.Rotate(2 * Radians::PI);
+  ExpectEqual(line2, line0_);
 }
 
 TEST_F(LineTest, EqualOperator) {
-  Point origin1(2.3, -4.5);
-  Point origin2(0, 0);
-
-  Vector n1(1, 1);
-  Vector n2(2, 1);
-
-  Line line1(n1, origin1);
-  Line line2(n1, origin2);
-  Line line3(n2, origin1);
-
-  EXPECT_TRUE(line1 == line1);
-  EXPECT_FALSE(line1 == line2);
-  EXPECT_FALSE(line1 == line3);
-
-  Line line4(Vector::i, 0, 0);
-  Line line5(-Vector::i, 0, 0);
-
-  EXPECT_FALSE(line4 == line5);
+  EXPECT_TRUE(line0_ == line0_);
+  EXPECT_FALSE(line0_ == line1_);
+  EXPECT_FALSE(line0_ == line2_);
 }
 
 TEST_F(LineTest, NotEqualOperator) {
-  Point origin1(2.3, -4.5);
-  Point origin2(0, 0);
-
-  Vector n1(1, 1);
-  Vector n2(2, 1);
-
-  Line line1(n1, origin1);
-  Line line2(n1, origin2);
-  Line line3(n2, origin1);
-
-  EXPECT_FALSE(line1 != line1);
-  EXPECT_TRUE(line1 != line2);
-  EXPECT_TRUE(line1 != line3);
-
-  Line line4(Vector::i, 0, 0);
-  Line line5(-Vector::i, 0, 0);
-
-  EXPECT_TRUE(line4 != line5);
+  EXPECT_FALSE(line0_ != line0_);
+  EXPECT_TRUE(line0_ != line1_);
+  EXPECT_TRUE(line0_ != line2_);
 }
 
 }  // namespace gl2d
