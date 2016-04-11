@@ -5,11 +5,48 @@ namespace gl2d {
 
 class RadiansTest : public ::testing::Test {
  protected:
+  const double kPi = 3.14159265359;
   const double kPiDouble = 3.14159265359;
   const double k2PiDouble = 2 * kPiDouble;
 
   Radians kPiRadians;
   Radians k2PiRadians;
+
+  Radians radian0_;
+  Radians radian1_;
+  Radians radian2_;
+  Radians radian3_;
+  Radians radian4_;
+  Radians radian5_;
+  Radians radian6_;
+  Radians radian7_;
+  Radians radian8_;
+
+  virtual void SetUp() {
+    radian0_.radians_ = kPi;
+    radian1_.radians_ = 2 * kPi;
+    radian2_.radians_ = 3 * kPi;
+    radian3_.radians_ = -kPi;
+    radian4_.radians_ = 2 * kPi * kPi;
+    radian5_.radians_ = 0;
+    radian6_.radians_ = kPi / 2;
+    radian7_.radians_ = 3 * kPi;
+    radian8_.radians_ = 3 / 2. * kPi;
+  }
+
+  virtual void ExpectEqual(const Radians& radians1, const Radians& radians2) {
+    EXPECT_NEAR(radians1.radians_, radians2.radians_, 1e-10);
+  }
+
+  virtual void AssertEqual(const Radians& radians1, const Radians& radians2) {
+    ASSERT_NEAR(radians1.radians_, radians2.radians_, 1e-10);
+  }
+
+  virtual void AssertAssignment(Radians* radians1, const Radians& radians2) {
+    ASSERT_FALSE(radians1 == nullptr);
+    radians1->radians_ = radians2.radians_;
+    AssertEqual(*radians1, radians2);
+  }
 
  public:
   RadiansTest() {
@@ -20,112 +57,152 @@ class RadiansTest : public ::testing::Test {
 };
 
 TEST_F(RadiansTest, Constructor) {
-  Radians rad(3.14);
+  Radians rad(kPi);
 
-  EXPECT_NEAR(rad.radians_, 3.14, 1e-10);
+  ExpectEqual(rad, radian0_);
 }
 
 TEST_F(RadiansTest, Getters) {
+  // TODO(monteiro)
 }
 
 TEST_F(RadiansTest, Setters) {
+  // TODO(monteiro)
 }
 
 TEST_F(RadiansTest, Normalize) {
-  Radians r1(kPiDouble);
-  Radians r2(-kPiDouble);
-  Radians r3(k2PiDouble);
-  Radians r4(-k2PiDouble);
-  Radians r5(k2PiDouble * 5);
-  Radians r6(-k2PiDouble * 5);
-  Radians r7(k2PiDouble * 5 + kPiDouble);
-  Radians r8(-k2PiDouble * 5 - kPiDouble);
+  // TODO(monteiro)
+}
 
-  r1.Normalize();
-  r2.Normalize();
-  r3.Normalize();
-  r4.Normalize();
-  r5.Normalize();
-  r6.Normalize();
-  r7.Normalize();
-  r8.Normalize();
+TEST_F(RadiansTest, Cosine) {
+  EXPECT_NEAR(Radians::Cos(radian5_), 1, 1e-10);
+  EXPECT_NEAR(Radians::Cos(radian6_), 0, 1e-10);
+  EXPECT_NEAR(Radians::Cos(radian7_), -1, 1e-10);
+  EXPECT_NEAR(Radians::Cos(radian8_), 0, 1e-10);
+}
 
-  EXPECT_NEAR(r1.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r2.radians_, -kPiDouble, 1e-10);
-  EXPECT_NEAR(r3.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r4.radians_, -k2PiDouble, 1e-10);
-  EXPECT_NEAR(r5.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r6.radians_, -k2PiDouble, 1e-10);
-  EXPECT_NEAR(r7.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r8.radians_, -kPiDouble, 1e-10);
+TEST_F(RadiansTest, Sine) {
+  EXPECT_NEAR(Radians::Sin(radian5_), 0, 1e-10);
+  EXPECT_NEAR(Radians::Sin(radian6_), 1, 1e-10);
+  EXPECT_NEAR(Radians::Sin(radian7_), 0, 1e-10);
+  EXPECT_NEAR(Radians::Sin(radian8_), -1, 1e-10);
+}
+
+TEST_F(RadiansTest, ArcCosine) {
+  ExpectEqual(Radians::Acos(1), radian5_);
+  ExpectEqual(Radians::Acos(0), radian6_);
+  ExpectEqual(Radians::Acos(-1), radian0_);
+}
+
+TEST_F(RadiansTest, ArcSine) {
+  ExpectEqual(Radians::Asin(1), radian6_);
+  ExpectEqual(Radians::Asin(0), radian5_);
+  ExpectEqual(Radians::Asin(-1), radian8_);
 }
 
 TEST_F(RadiansTest, Addition) {
-  Radians r1 = kPiRadians + kPiRadians;
-  Radians r2 = kPiRadians + kPiDouble;
-  Radians r3 = kPiDouble + kPiRadians;
-  Radians r4 = +k2PiRadians;
-  Radians r5(kPiDouble);
-  r5 += kPiRadians;
-  Radians r6(kPiDouble);
-  r6 += kPiDouble;
+  Radians r1;
+  Radians r2;
+  Radians r3;
+  Radians r4;
+  Radians r5;
+  Radians r6;
 
-  EXPECT_NEAR(r1.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r2.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r3.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r4.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r5.radians_, k2PiDouble, 1e-10);
-  EXPECT_NEAR(r6.radians_, k2PiDouble, 1e-10);
+  AssertAssignment(&r1, radian0_ + radian1_);
+  AssertAssignment(&r2, radian0_ + 2 * kPi);
+  AssertAssignment(&r3, kPi + radian1_);
+  AssertAssignment(&r4, radian0_);
+  AssertAssignment(&r5, radian0_);
+  AssertAssignment(&r6, +radian2_);
+
+  r4 += radian1_;
+  r5 += 2 * kPi;
+
+  ExpectEqual(r1, radian2_);
+  ExpectEqual(r2, radian2_);
+  ExpectEqual(r3, radian2_);
+  ExpectEqual(r4, radian2_);
+  ExpectEqual(r5, radian2_);
+  ExpectEqual(r6, radian2_);
 }
 
 TEST_F(RadiansTest, Subtraction) {
-  Radians r1 = k2PiRadians - kPiRadians;
-  Radians r2 = k2PiRadians - kPiDouble;
-  Radians r3 = k2PiDouble - kPiRadians;
-  Radians r4 = -kPiRadians;
-  Radians r5(k2PiDouble);
-  r5 -= kPiRadians;
-  Radians r6(k2PiDouble);
-  r6 -= kPiDouble;
+  Radians r1;
+  Radians r2;
+  Radians r3;
+  Radians r4;
+  Radians r5;
+  Radians r6;
 
-  EXPECT_NEAR(r1.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r2.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r3.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r4.radians_, -kPiDouble, 1e-10);
-  EXPECT_NEAR(r5.radians_, kPiDouble, 1e-10);
-  EXPECT_NEAR(r6.radians_, kPiDouble, 1e-10);
+  AssertAssignment(&r1, radian2_ - radian1_);
+  AssertAssignment(&r2, radian2_ - 2 * kPi);
+  AssertAssignment(&r3, 3 * kPi - radian1_);
+  AssertAssignment(&r4, radian2_);
+  AssertAssignment(&r5, radian2_);
+  AssertAssignment(&r6, -radian3_);
+
+  r4 -= radian1_;
+  r5 -= 2 * kPi;
+
+  ExpectEqual(r1, radian0_);
+  ExpectEqual(r2, radian0_);
+  ExpectEqual(r3, radian0_);
+  ExpectEqual(r4, radian0_);
+  ExpectEqual(r5, radian0_);
+  ExpectEqual(r6, radian0_);
 }
 
 TEST_F(RadiansTest, Product) {
-  Radians r1 = kPiRadians * k2PiDouble;
-  Radians r2 = k2PiDouble * kPiRadians;
-  Radians r3 = kPiRadians * k2PiRadians;
-  Radians r4(k2PiDouble);
-  r4 *= kPiDouble;
-  Radians r5(k2PiDouble);
-  r5 *= kPiRadians;
+  Radians r1;
+  Radians r2;
+  Radians r3;
+  Radians r4;
+  Radians r5;
 
-  EXPECT_NEAR(r1.radians_, k2PiDouble * kPiDouble, 1e-10);
-  EXPECT_NEAR(r2.radians_, k2PiDouble * kPiDouble, 1e-10);
-  EXPECT_NEAR(r3.radians_, k2PiDouble * kPiDouble, 1e-10);
-  EXPECT_NEAR(r4.radians_, k2PiDouble * kPiDouble, 1e-10);
-  EXPECT_NEAR(r5.radians_, k2PiDouble * kPiDouble, 1e-10);
+  AssertAssignment(&r1, radian0_ * radian1_);
+  AssertAssignment(&r2, radian0_ * (2 * kPi));
+  AssertAssignment(&r3, kPi * radian1_);
+  AssertAssignment(&r4, radian0_);
+  AssertAssignment(&r5, radian0_);
+
+  r4 *= radian1_;
+  r5 *= 2 * kPi;
+
+  ExpectEqual(r1, radian4_);
+  ExpectEqual(r2, radian4_);
+  ExpectEqual(r3, radian4_);
+  ExpectEqual(r4, radian4_);
+  ExpectEqual(r5, radian4_);
 }
 
 TEST_F(RadiansTest, Division) {
-  Radians r1 = kPiRadians / k2PiDouble;
-  Radians r2 = kPiDouble / k2PiRadians;
-  Radians r3 = kPiRadians / k2PiRadians;
-  Radians r4(kPiDouble);
-  r4 /= k2PiDouble;
-  Radians r5(kPiDouble);
-  r5 /= k2PiRadians;
+  Radians r1;
+  Radians r2;
+  Radians r3;
+  Radians r4;
+  Radians r5;
 
-  EXPECT_NEAR(r1.radians_, 0.5, 1e-10);
-  EXPECT_NEAR(r2.radians_, 0.5, 1e-10);
-  EXPECT_NEAR(r3.radians_, 0.5, 1e-10);
-  EXPECT_NEAR(r4.radians_, 0.5, 1e-10);
-  EXPECT_NEAR(r5.radians_, 0.5, 1e-10);
+  AssertAssignment(&r1, radian4_ / radian1_);
+  AssertAssignment(&r2, radian4_ / (2 * kPi));
+  AssertAssignment(&r3, (2 * kPi * kPi) / radian1_);
+  AssertAssignment(&r4, radian4_);
+  AssertAssignment(&r5, radian4_);
+
+  r4 /= radian1_;
+  r5 /= 2 * kPi;
+
+  ExpectEqual(r1, radian0_);
+  ExpectEqual(r2, radian0_);
+  ExpectEqual(r3, radian0_);
+  ExpectEqual(r4, radian0_);
+  ExpectEqual(r5, radian0_);
+}
+
+TEST_F(RadiansTest, DoubleAssignment) {
+  Radians r1;
+  r1 = kPi;
+
+  ExpectEqual(r1, radian0_);
 }
 
 TEST_F(RadiansTest, EqualOperator) {
@@ -134,75 +211,6 @@ TEST_F(RadiansTest, EqualOperator) {
 
 TEST_F(RadiansTest, NotEqualOperator) {
   // TODO(user)
-}
-
-TEST_F(RadiansTest, DoubleAssignment) {
-  Radians rad;
-  rad = kPiDouble;
-
-  EXPECT_NEAR(rad.radians_, kPiDouble, 1e-10);
-}
-
-TEST_F(RadiansTest, Cosine) {
-  Radians r1(kPiDouble * 0);
-  Radians r2(kPiDouble * 0.5);
-  Radians r3(kPiDouble * 1);
-  Radians r4(kPiDouble * 1.5);
-
-  double answer1 = 1;
-  double answer2 = 0;
-  double answer3 = -1;
-  double answer4 = 0;
-
-  EXPECT_NEAR(Radians::Cos(r1), answer1, 1e-10);
-  EXPECT_NEAR(Radians::Cos(r2), answer2, 1e-10);
-  EXPECT_NEAR(Radians::Cos(r3), answer3, 1e-10);
-  EXPECT_NEAR(Radians::Cos(r4), answer4, 1e-10);
-}
-
-TEST_F(RadiansTest, Sine) {
-  Radians r1(kPiDouble * 0);
-  Radians r2(kPiDouble * 0.5);
-  Radians r3(kPiDouble * 1);
-  Radians r4(kPiDouble * 1.5);
-
-  double answer1 = 0;
-  double answer2 = 1;
-  double answer3 = 0;
-  double answer4 = -1;
-
-  EXPECT_NEAR(Radians::Sin(r1), answer1, 1e-10);
-  EXPECT_NEAR(Radians::Sin(r2), answer2, 1e-10);
-  EXPECT_NEAR(Radians::Sin(r3), answer3, 1e-10);
-  EXPECT_NEAR(Radians::Sin(r4), answer4, 1e-10);
-}
-
-TEST_F(RadiansTest, ArcCosine) {
-  double value1 = 1;
-  double value2 = 0.70710678118;
-  double value3 = 0;
-  double value4 = -0.70710678118;
-  double value5 = -1;
-
-  EXPECT_NEAR(0. / 4 * kPiDouble, Radians::Acos(value1).radians_, 1e-10);
-  EXPECT_NEAR(1. / 4 * kPiDouble, Radians::Acos(value2).radians_, 1e-10);
-  EXPECT_NEAR(2. / 4 * kPiDouble, Radians::Acos(value3).radians_, 1e-10);
-  EXPECT_NEAR(3. / 4 * kPiDouble, Radians::Acos(value4).radians_, 1e-10);
-  EXPECT_NEAR(4. / 4 * kPiDouble, Radians::Acos(value5).radians_, 1e-10);
-}
-
-TEST_F(RadiansTest, ArcSine) {
-  double value1 = 1;
-  double value2 = 0.70710678118;
-  double value3 = 0;
-  double value4 = -0.70710678118;
-  double value5 = -1;
-
-  EXPECT_NEAR(2. / 4 * kPiDouble, Radians::Asin(value1).radians_, 1e-10);
-  EXPECT_NEAR(1. / 4 * kPiDouble, Radians::Asin(value2).radians_, 1e-10);
-  EXPECT_NEAR(0. / 4 * kPiDouble, Radians::Asin(value3).radians_, 1e-10);
-  EXPECT_NEAR(-1. / 4 * kPiDouble, Radians::Asin(value4).radians_, 1e-10);
-  EXPECT_NEAR(-2. / 4 * kPiDouble, Radians::Asin(value5).radians_, 1e-10);
 }
 
 }  // namespace gl2d
