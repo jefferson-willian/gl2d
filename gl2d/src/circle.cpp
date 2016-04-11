@@ -1,6 +1,8 @@
 #include "gl2d/include/circle.h"
 
+#include "gl2d/include/point.h"
 #include "gl2d/include/util.h"
+#include "gl2d/include/vector.h"
 
 namespace gl2d {
 
@@ -24,8 +26,8 @@ double Circle::Radius() const {
   return radius_;
 }
 
-void Circle::Radius(double r) {
-  radius_ = r;
+void Circle::Radius(double radius) {
+  radius_ = radius;
 }
 
 Circle& Circle::Translate(const Vector& v) {
@@ -34,11 +36,11 @@ Circle& Circle::Translate(const Vector& v) {
 }
 
 bool Circle::operator==(const Circle& rhs) const {
-  return center_ == rhs.Center() && util::cmpD(radius_, rhs.Radius()) == 0;
+  return center_ == rhs.center_ && util::cmpD(radius_, rhs.radius_) == 0;
 }
 
 bool Circle::operator!=(const Circle& rhs) const {
-  return !(*this == rhs);
+  return center_ != rhs.center_ || util::cmpD(radius_, rhs.radius_) != 0;
 }
 
 }  // namespace gl2d

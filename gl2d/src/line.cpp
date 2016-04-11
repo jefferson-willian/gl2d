@@ -58,12 +58,11 @@ Line& Line::Rotate(const Radians& angle) {
 }
 
 bool Line::operator==(const Line& rhs) const {
-  return n_ == rhs.Normal() && origin_ == rhs.Origin();
+  return n_ == rhs.n_ && origin_ == rhs.origin_;
 }
 
 bool Line::operator!=(const Line& rhs) const {
-  return !(*this == rhs);
+  return n_ != rhs.n_ || origin_ != rhs.origin_;
 }
 
 }  // namespace gl2d
-

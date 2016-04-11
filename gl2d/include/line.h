@@ -18,6 +18,7 @@ class Line {
  public:
   explicit Line(const Vector& n, double x, double y);
   explicit Line(const Vector& n, const Point& origin);
+  Line() = default;
   ~Line() = default;
 
   // Get normal vector.
@@ -48,8 +49,7 @@ class Line {
   bool operator==(const Line& rhs) const;
   bool operator!=(const Line& rhs) const;
 
-  FRIEND_TEST(LineTest, Constructor);
-  FRIEND_TEST(LineTest, Setters);
+  friend class LineTest;
 };
 
 }  // namespace gl2d

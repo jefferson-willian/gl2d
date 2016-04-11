@@ -17,6 +17,7 @@ class Circle {
  public:
   explicit Circle(double x, double y, double r);
   explicit Circle(const Point& center, double r);
+  Circle() = default;
   ~Circle() = default;
 
   // Get the circle center location.
@@ -30,7 +31,7 @@ class Circle {
   double Radius() const;
 
   // Set circle radius.
-  void Radius(double r);
+  void Radius(double radius);
 
   // Translate the circle center location.
   Circle& Translate(const Vector& v);
@@ -39,8 +40,8 @@ class Circle {
   bool operator==(const Circle& rhs) const;
   bool operator!=(const Circle& rhs) const;
 
-  FRIEND_TEST(CircleTest, Constructor);
-  FRIEND_TEST(CircleTest, Setters);
+  // Friend test classes.
+  friend class CircleTest;
 };
 
 }  // namespace gl2d
