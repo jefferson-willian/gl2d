@@ -4,159 +4,119 @@
 namespace gl2d {
 
 class LineSegmentTest : public ::testing::Test {
+ protected:
+  LineSegment line0_;
+  LineSegment line1_;
+  LineSegment line2_;
+  LineSegment line3_;
+  LineSegment line4_;
+  LineSegment line5_;
+
+  virtual void SetUp() {
+    line0_.a_ = Point(2.3, -4.5);
+    line0_.b_ = Point(-1.3, 2.3);
+
+    line1_.a_ = Point(1.3, 2.5);
+    line1_.b_ = Point(-1.3, 2.3);
+
+    line2_.a_ = Point(2.3, -4.5);
+    line2_.b_ = Point(1.3, 2.5);
+
+    line3_.a_ = Point(1.3, 2.5);
+    line3_.b_ = Point(-2.3, 9.3);
+
+    line4_.a_ = Point(-2, 1);
+    line4_.b_ = Point(2, 1);
+
+    line5_.a_ = Point(0, -1);
+    line5_.b_ = Point(0, 3);
+  }
+
+  virtual void ExpectEqual(const LineSegment& line1, const LineSegment& line2) {
+    EXPECT_EQ(line1.a_, line2.a_);
+    EXPECT_EQ(line1.b_, line2.b_);
+  }
+
+  virtual void AssertEqual(const LineSegment& line1, const LineSegment& line2) {
+    ASSERT_EQ(line1.a_, line2.a_);
+    ASSERT_EQ(line1.b_, line2.b_);
+  }
+
+  virtual void AssertAssignment(LineSegment* line1, const LineSegment& line2) {
+    ASSERT_FALSE(line1 == nullptr);
+    line1->a_ = line2.a_;
+    line1->b_ = line2.b_;
+    AssertEqual(*line1, line2);
+  }
 };
 
 TEST_F(LineSegmentTest, Constructor) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  LineSegment line1(Point(2.3, -4.5), Point(-1.3, 2.3));
 
-  double x2 = -1.3;
-  double y2 = 2.3;
-
-  const Point p1(x1, y1);
-  const Point p2(x2, y2);
-
-  LineSegment line(p1, p2);
-
-  EXPECT_EQ(p1, line.a_);
-  EXPECT_EQ(p2, line.b_);
+  ExpectEqual(line1, line0_);
 }
 
 TEST_F(LineSegmentTest, Setters) {
-  double x1 = 2.3;
-  double y1 = -4.5;
+  LineSegment line1;
+  LineSegment line2;
+  LineSegment line3;
+  LineSegment line4;
 
-  double x2 = -1.3;
-  double y2 = 2.3;
+  AssertAssignment(&line1, line0_);
+  AssertAssignment(&line2, line0_);
+  AssertAssignment(&line3, line0_);
+  AssertAssignment(&line4, line0_);
 
-  const Point p1(x1, y1);
-  const Point p2(x2, y2);
+  line1.a(1.3, 2.5);
+  line2.a(Point(1.3, 2.5));
 
-  LineSegment line(Point(0, 0), Point(0, 0));
+  ExpectEqual(line1, line1_);
+  ExpectEqual(line2, line1_);
 
-  line.a(p1);
-  line.b(p2);
+  line3.b(1.3, 2.5);
+  line4.b(Point(1.3, 2.5));
 
-  EXPECT_EQ(p1, line.a_);
-  EXPECT_EQ(p2, line.b_);
+  ExpectEqual(line3, line2_);
+  ExpectEqual(line4, line2_);
 }
 
 TEST_F(LineSegmentTest, Getters) {
-  double x1 = 2.3;
-  double y1 = -4.5;
-
-  double x2 = -1.3;
-  double y2 = 2.3;
-
-  const Point p1(x1, y1);
-  const Point p2(x2, y2);
-
-  LineSegment line(p1, p2);
-
-  EXPECT_EQ(p1, line.a());
-  EXPECT_EQ(p2, line.b());
+  EXPECT_EQ(line0_.a(), Point(2.3, -4.5));
+  EXPECT_EQ(line0_.b(), Point(-1.3, 2.3));
 }
 
 TEST_F(LineSegmentTest, Normal) {
-  double x1 = 1;
-  double y1 = -1;
+  Vector v(-0.883787916347, -0.467887720419);
 
-  double x2 = -1;
-  double y2 = -3;
-
-  const Point p1(x1, y1);
-  const Point p2(x2, y2);
-
-  LineSegment line(p1, p2);
-
-  Vector n(1, -1);
-  n.Normalize();
-
-  EXPECT_EQ(n, line.Normal());
+  EXPECT_EQ(v, line0_.Normal());
 }
 
 TEST_F(LineSegmentTest, Length) {
-  const Point a(2.3, -1.3);
-  const Point b(3.3, 5.3);
-
-  LineSegment line1(a, b);
-  LineSegment line2(a, a);
-
-  EXPECT_NEAR(line1.Length(), 6.67532770731, 1e-10);
-  EXPECT_NEAR(line2.Length(), 0, 1e-10);
+  EXPECT_NEAR(line0_.Length(), 7.69415362467, 1e-10);
 }
 
 TEST_F(LineSegmentTest, Translation) {
-  const Point a(2.3, -1.3);
-  const Point b(3.3, 5.3);
+  line0_.Translate(Vector(-1, 7));
 
-  const Point c(3.3, 0.7);
-  const Point d(4.3, 7.3);
-
-  Vector v(1, 2);
-
-  LineSegment line(a, b);
-  line.Translate(v);
-
-  EXPECT_EQ(line.a_, c);
-  EXPECT_EQ(line.b_, d);
+  ExpectEqual(line0_, line3_);
 }
 
 TEST_F(LineSegmentTest, Rotation) {
-  const Point a(-2, 1);
-  const Point b(2, 1);
+  line4_.Rotate(Radians::PI / 2);
 
-  const Point c(0, -1);
-  const Point d(0, 3);
-
-  LineSegment line(a, b);
-  line.Rotate(Radians::PI / 2);
-
-  EXPECT_EQ(line.a_, c);
-  EXPECT_EQ(line.b_, d);
-
-  line.Rotate(Radians::PI / 2);
-
-  EXPECT_EQ(line.a_, b);
-  EXPECT_EQ(line.b_, a);
+  ExpectEqual(line4_, line5_);
 }
 
 TEST_F(LineSegmentTest, EqualOperator) {
-  const Point a(-2, 0);
-  const Point b(2, 0);
-
-  const Point c(0, -2);
-  const Point d(0, 2);
-
-  LineSegment line1(a, b);
-  LineSegment line2(c, d);
-  LineSegment line3(b, a);
-  LineSegment line4(d, c);
-
-  EXPECT_TRUE(line1 == line1);
-  EXPECT_TRUE(line2 == line2);
-  EXPECT_FALSE(line1 == line2);
-  EXPECT_FALSE(line1 == line3);
-  EXPECT_FALSE(line2 == line4);
+  EXPECT_TRUE(line0_ == line0_);
+  EXPECT_FALSE(line0_ == line1_);
+  EXPECT_FALSE(line0_ == line2_);
 }
 
 TEST_F(LineSegmentTest, NotEqualOperator) {
-  const Point a(-2, 0);
-  const Point b(2, 0);
-
-  const Point c(0, -2);
-  const Point d(0, 2);
-
-  LineSegment line1(a, b);
-  LineSegment line2(c, d);
-  LineSegment line3(b, a);
-  LineSegment line4(d, c);
-
-  EXPECT_FALSE(line1 != line1);
-  EXPECT_FALSE(line2 != line2);
-  EXPECT_TRUE(line1 != line2);
-  EXPECT_TRUE(line1 != line3);
-  EXPECT_TRUE(line2 != line4);
+  EXPECT_FALSE(line0_ != line0_);
+  EXPECT_TRUE(line0_ != line1_);
+  EXPECT_TRUE(line0_ != line2_);
 }
 
 }  // namespace gl2d

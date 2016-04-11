@@ -53,23 +53,28 @@ LineSegment& LineSegment::Translate(const Vector& v) {
 
 LineSegment& LineSegment::Rotate(const Radians& angle) {
   Point center = (a_ + b_) / 2;
-  Translate(-Vector(center));
-  Vector a(a_);
-  Vector b(b_);
-  a.Rotate(angle);
-  b.Rotate(angle);
-  a_ = a.Point();
-  b_ = b.Point();
-  Translate(Vector(center));
+
+  Vector va(center, a_);
+  Vector vb(center, b_);
+
+  va.Rotate(angle);
+  vb.Rotate(angle);
+
+  va += Vector(center);
+  vb += Vector(center);
+
+  a_ = va.Point();
+  b_ = vb.Point();
+
   return *this;
 }
 
 bool LineSegment::operator==(const LineSegment& rhs) const {
-  return a_ == rhs.a() && b_ == rhs.b();
+  return a_ == rhs.a_ && b_ == rhs.b_;
 }
 
 bool LineSegment::operator!=(const LineSegment& rhs) const {
-  return !(*this == rhs);
+  return a_ != rhs.a_ || b_ != rhs.b_;
 }
 
 }  // namespace gl2d

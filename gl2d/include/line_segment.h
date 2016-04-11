@@ -17,6 +17,7 @@ class LineSegment {
 
  public:
   explicit LineSegment(const Point& a, const Point& b);
+  LineSegment() = default;
   ~LineSegment() = default;
 
   // Get the starting point.
@@ -49,6 +50,7 @@ class LineSegment {
   bool operator==(const LineSegment& rhs) const;
   bool operator!=(const LineSegment& rhs) const;
 
+  friend class LineSegmentTest;
   FRIEND_TEST(LineSegmentTest, Constructor);
   FRIEND_TEST(LineSegmentTest, Setters);
   FRIEND_TEST(LineSegmentTest, Translation);
