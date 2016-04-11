@@ -40,7 +40,6 @@ class LineTest : public ::testing::Test {
     line1->origin_ = line2.origin_;
     AssertEqual(*line1, line2);
   }
-
 };
 
 TEST_F(LineTest, Constructor) {
