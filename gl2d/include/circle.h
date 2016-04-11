@@ -12,6 +12,7 @@ class Circle {
   // Center location.
   Point center_;
   // Radius.
+  // TODO(monteiro) : Change to unsigned.
   double radius_;
 
  public:
