@@ -1,6 +1,7 @@
 #ifndef GL2D_INCLUDE_CIRCLE_H_
 #define GL2D_INCLUDE_CIRCLE_H_
 
+#include "gl2d/include/location.h"
 #include "gl2d/include/point.h"
 #include "gl2d/include/vector.h"
 #include "gtest/gtest.h"
@@ -36,6 +37,13 @@ class Circle {
 
   // Translate the circle center location.
   Circle& Translate(const Vector& v);
+
+  // Return the reference location for the point. Possible results are:
+  //    - Location::INSIDE
+  //    - Location::BORDER
+  //    - Location::OUTSIDE
+  //    - Location::UNKNOWN (error purposes only).
+  const ::gl2d::Location Location(const Point& point) const;
 
   // Mathematical operators.
   bool operator==(const Circle& rhs) const;

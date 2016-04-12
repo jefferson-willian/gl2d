@@ -1,5 +1,7 @@
 #include "gl2d/include/circle.h"
 
+#include "gl2d/include/distance.h"
+#include "gl2d/include/location.h"
 #include "gl2d/include/point.h"
 #include "gl2d/include/util.h"
 #include "gl2d/include/vector.h"
@@ -33,6 +35,15 @@ void Circle::Radius(double radius) {
 Circle& Circle::Translate(const Vector& v) {
   center_.Translate(v);
   return *this;
+}
+
+const ::gl2d::Location Circle::Location(const Point& point) const {
+  switch (util::cmpD(Distance(point, center_), radius_)) {
+    case -1 : return ::gl2d::Location::INSIDE;
+    case  0 : return ::gl2d::Location::BORDER;
+    case  1 : return ::gl2d::Location::OUTSIDE;
+    default : return ::gl2d::Location::UNKNOWN;
+  }
 }
 
 bool Circle::operator==(const Circle& rhs) const {

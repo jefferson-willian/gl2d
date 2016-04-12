@@ -1,4 +1,5 @@
 #include "gl2d/include/circle.h"
+#include "gl2d/include/location.h"
 #include "gl2d/include/point.h"
 #include "gl2d/include/vector.h"
 #include "gtest/gtest.h"
@@ -76,6 +77,13 @@ TEST_F(CircleTest, Translation) {
   circle0_.Translate(Vector(2.9, 6.0));
 
   ExpectEqual(circle0_, circle1_);
+}
+
+TEST_F(CircleTest, Location)  {
+  EXPECT_EQ(circle0_.Location(Point(2.3, -4.5)), Location::INSIDE);
+  EXPECT_EQ(circle0_.Location(Point(3, -4)), Location::INSIDE);
+  EXPECT_EQ(circle0_.Location(Point(2.3, -2)), Location::BORDER);
+  EXPECT_EQ(circle0_.Location(Point(0, 0)), Location::OUTSIDE);
 }
 
 TEST_F(CircleTest, OperatorEqual) {
