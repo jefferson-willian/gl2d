@@ -70,10 +70,7 @@ Point operator-(const Point& p, const Point& q) {
 }
 
 Point operator-(const Point& p) {
-  Point t;
-  t.x_ = -p.x_;
-  t.y_ = -p.y_;
-  return t;
+  return Point(-p.x_, -p.y_);
 }
 
 Point operator*(const Point& p, double k) {
