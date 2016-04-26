@@ -37,7 +37,7 @@ Circle& Circle::Translate(const Vector& v) {
   return *this;
 }
 
-const ::gl2d::Location Circle::Location(const Point& point) const {
+::gl2d::Location Circle::Location(const Point& point) const {
   switch (util::cmpD(Distance(point, center_), radius_)) {
     case -1 : return ::gl2d::Location::INSIDE;
     case  0 : return ::gl2d::Location::BORDER;

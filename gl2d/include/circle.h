@@ -43,7 +43,7 @@ class Circle {
   //    - Location::BORDER
   //    - Location::OUTSIDE
   //    - Location::UNKNOWN (error purposes only).
-  const ::gl2d::Location Location(const Point& point) const;
+  ::gl2d::Location Location(const Point& point) const;
 
   // Mathematical operators.
   bool operator==(const Circle& rhs) const;
