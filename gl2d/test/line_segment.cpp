@@ -37,16 +37,12 @@ class LineSegmentTest : public ::testing::Test {
     EXPECT_EQ(line1.b_, line2.b_);
   }
 
-  virtual void AssertEqual(const LineSegment& line1, const LineSegment& line2) {
-    ASSERT_EQ(line1.a_, line2.a_);
-    ASSERT_EQ(line1.b_, line2.b_);
-  }
-
   virtual void AssertAssignment(LineSegment* line1, const LineSegment& line2) {
     ASSERT_FALSE(line1 == nullptr);
     line1->a_ = line2.a_;
     line1->b_ = line2.b_;
-    AssertEqual(*line1, line2);
+    ASSERT_EQ(line1->a_, line2.a_);
+    ASSERT_EQ(line1->b_, line2.b_);
   }
 };
 

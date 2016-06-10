@@ -41,14 +41,10 @@ class VectorTest : public ::testing::Test {
     EXPECT_EQ(v1.dest_, v2.dest_);
   }
 
-  virtual void AssertEqual(const Vector& v1, const Vector& v2) {
-    ASSERT_EQ(v1.dest_, v2.dest_);
-  }
-
   virtual void AssertAssignment(Vector* v1, const Vector& v2) {
     ASSERT_FALSE(v1 == nullptr);
     v1->dest_ = v2.dest_;
-    AssertEqual(*v1, v2);
+    ASSERT_EQ(v1->dest_, v2.dest_);
   }
 };
 

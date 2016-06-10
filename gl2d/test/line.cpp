@@ -29,16 +29,12 @@ class LineTest : public ::testing::Test {
     EXPECT_EQ(line1.origin_, line2.origin_);
   }
 
-  virtual void AssertEqual(const Line& line1, const Line& line2) {
-    ASSERT_EQ(line1.n_, line2.n_);
-    ASSERT_EQ(line1.origin_, line2.origin_);
-  }
-
   virtual void AssertAssignment(Line* line1, const Line& line2) {
     ASSERT_FALSE(line1 == nullptr);
     line1->n_ = line2.n_;
     line1->origin_ = line2.origin_;
-    AssertEqual(*line1, line2);
+    ASSERT_EQ(line1->n_, line2.n_);
+    ASSERT_EQ(line1->origin_, line2.origin_);
   }
 };
 

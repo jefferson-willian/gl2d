@@ -38,14 +38,10 @@ class RadiansTest : public ::testing::Test {
     EXPECT_NEAR(radians1.radians_, radians2.radians_, 1e-10);
   }
 
-  virtual void AssertEqual(const Radians& radians1, const Radians& radians2) {
-    ASSERT_NEAR(radians1.radians_, radians2.radians_, 1e-10);
-  }
-
   virtual void AssertAssignment(Radians* radians1, const Radians& radians2) {
     ASSERT_FALSE(radians1 == nullptr);
     radians1->radians_ = radians2.radians_;
-    AssertEqual(*radians1, radians2);
+    ASSERT_NEAR(radians1->radians_, radians2.radians_, 1e-10);
   }
 
  public:

@@ -42,16 +42,12 @@ class PointTest : public ::testing::Test {
     EXPECT_NEAR(p1.y_, p2.y_, 1e-10);
   }
 
-  virtual void AssertEqual(const Point& p1, const Point& p2) {
-    ASSERT_NEAR(p1.x_, p2.x_, 1e-10);
-    ASSERT_NEAR(p1.y_, p2.y_, 1e-10);
-  }
-
   virtual void AssertAssignment(Point* p1, const Point& p2) {
     ASSERT_FALSE(p1 == nullptr);
     p1->x_ = p2.x_;
     p1->y_ = p2.y_;
-    AssertEqual(*p1, p2);
+    ASSERT_NEAR(p1->x_, p2.x_, 1e-10);
+    ASSERT_NEAR(p1->y_, p2.y_, 1e-10);
   }
 };
 

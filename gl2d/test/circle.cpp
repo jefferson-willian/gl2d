@@ -28,16 +28,12 @@ class CircleTest : public ::testing::Test {
     EXPECT_NEAR(c1.radius_, c2.radius_, 1e-10);
   }
 
-  virtual void AssertEqual(const Circle& c1, const Circle& c2) {
-    ASSERT_EQ(c1.center_, c2.center_);
-    ASSERT_NEAR(c1.radius_, c2.radius_, 1e-10);
-  }
-
   virtual void AssertAssignment(Circle* c1, const Circle& c2) {
     ASSERT_FALSE(c1 == nullptr);
     c1->center_ = c2.center_;
     c1->radius_ = c2.radius_;
-    AssertEqual(*c1, c2);
+    ASSERT_EQ(c1->center_, c2.center_);
+    ASSERT_NEAR(c1->radius_, c2.radius_, 1e-10);
   }
 };
 
