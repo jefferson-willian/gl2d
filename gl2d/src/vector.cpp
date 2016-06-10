@@ -1,5 +1,7 @@
 #include "gl2d/include/vector.h"
 
+#include <cmath>
+
 #include "gl2d/include/point.h"
 #include "gl2d/include/radians.h"
 #include "gl2d/include/util.h"
@@ -125,4 +127,3 @@ const Vector Vector::i = Vector(1, 0);
 const Vector Vector::j = Vector(0, 1);
 
 }  // namespace gl2d
-
