@@ -7,154 +7,184 @@ namespace gl2d {
 
 class VectorTest : public ::testing::Test {
  protected:
-  double kX1, kY1;
-  double kX2, kY2;
-  double kX3, kY3;
-  double kX4, kY4;
-  double kX5, kY5;
-  double kX6, kY6;
-  double kX7, kY7;
+  Vector vector0_;
+  Vector vector1_;
+  Vector vector2_;
+  Vector vector3_;
+  Vector vector4_;
+  Vector vector5_;
+  Vector vector6_;
+  Vector vector7_;
+  Vector vector8_;
+  Vector vector9_;
+  Vector vector10_;
+  Vector vector11_;
+  Vector vector12_;
 
-  Vector kV1;
-  Vector kV2;
-  Vector kV3;
-  Vector kV4;
-  Vector kV5;
-  Vector kV6;
-  Vector kV7;
+  virtual void SetUp() {
+    vector0_.dest_ = Point(2.3, -4.5);
+    vector1_.dest_ = Point(1.3, 5.5);
+    vector2_.dest_ = Point(3, -4);
+    vector3_.dest_ = Point(0, 3);
+    vector4_.dest_ = Point(-3, 0);
+    vector5_.dest_ = Point(0, -3);
+    vector6_.dest_ = Point(3, 0);
+    vector7_.dest_ = Point(-1, 10);
+    vector8_.dest_ = Point(0.6, -0.8);
+    vector9_.dest_ = Point(3.6, 1);
+    vector10_.dest_ = Point(1, -10);
+    vector11_.dest_ = Point(-2.3, 4.5);
+    vector12_.dest_ = Point(8.05, -15.75);
+  }
 
-  VectorTest() {
-    kX1 = 2.3;
-    kY1 = -4.5;
-    kV1.dest_ = Point(kX1, kY1);
-    kX2 = 1.3;
-    kY2 = 5.5;
-    kV2.dest_ = Point(kX2, kY2);
-    kX3 = 3;
-    kY3 = -4;
-    kV3.dest_ = Point(kX3, kY3);
-    kX4 = 0;
-    kY4 = 3;
-    kV4.dest_ = Point(kX4, kY4);
-    kX5 = -3;
-    kY5 = 0;
-    kV5.dest_ = Point(kX5, kY5);
-    kX6 = 0;
-    kY6 = -3;
-    kV6.dest_ = Point(kX6, kY6);
-    kX7 = 3;
-    kY7 = 0;
-    kV7.dest_ = Point(kX7, kY7);
+  virtual void ExpectEqual(const Vector& v1, const Vector& v2) {
+    EXPECT_EQ(v1.dest_, v2.dest_);
+  }
+
+  virtual void AssertEqual(const Vector& v1, const Vector& v2) {
+    ASSERT_EQ(v1.dest_, v2.dest_);
+  }
+
+  virtual void AssertAssignment(Vector* v1, const Vector& v2) {
+    ASSERT_FALSE(v1 == nullptr);
+    v1->dest_ = v2.dest_;
+    AssertEqual(*v1, v2);
   }
 };
 
 TEST_F(VectorTest, Constructor) {
-  const Vector v1(kX1, kY1);
-  const Vector v2(Point(kX1, kY1));
-  const Vector v3(Point(kX1, kY1), Point(kX2, kY2));
+  const Vector v1(2.3, -4.5);
+  const Vector v2(Point(2.3, -4.5));
+  const Vector v3(Point(2.3, -4.5), Point(1.3, 5.5));
 
-  EXPECT_EQ(v1.dest_, Point(kX1, kY1));
-  EXPECT_EQ(v2.dest_, Point(kX1, kY1));
-  EXPECT_EQ(v3.dest_, Point(kX2 - kX1, kY2 - kY1));
+  ExpectEqual(v1, vector0_);
+  ExpectEqual(v2, vector0_);
+  ExpectEqual(v3, vector7_);
 }
 
 TEST_F(VectorTest, Getters) {
-  EXPECT_NEAR(kX1, kV1.x(), 1e-10);
-  EXPECT_NEAR(kY1, kV1.y(), 1e-10);
-  EXPECT_EQ(Point(kX1, kY1), kV1.Point());
+  EXPECT_NEAR(2.3, vector0_.x(), 1e-10);
+  EXPECT_NEAR(-4.5, vector0_.y(), 1e-10);
+  EXPECT_EQ(Point(2.3, -4.5), vector0_.Point());
 }
 
 TEST_F(VectorTest, Setters) {
-  Vector v;
-  v.x(kX1);
-  v.y(kY1);
+  Vector v1;
+  Vector v2;
 
-  EXPECT_EQ(Point(kX1, kY1), v.dest_);
+  AssertAssignment(&v1, vector2_);
+  AssertAssignment(&v2, vector4_);
+
+  v1.y(0);
+  v2.x(3);
+
+  ExpectEqual(vector6_, v1);
+  ExpectEqual(vector6_, v2);
 }
 
 TEST_F(VectorTest, Magnitude) {
-  EXPECT_NEAR(kV3.Magnitude(), 5, 1e-10);
+  EXPECT_NEAR(vector2_.Magnitude(), 5, 1e-10);
 }
 
 TEST_F(VectorTest, Normalize) {
-  EXPECT_EQ(kV3.Normalize().dest_, Point(0.6, -0.8));
+  ExpectEqual(vector2_.Normalize(), vector8_);
 }
 
 TEST_F(VectorTest, Angle) {
-  EXPECT_EQ(kV4.Angle(), 1 / 2. * Radians::PI);
-  EXPECT_EQ(kV5.Angle(), 2 / 2. * Radians::PI);
-  EXPECT_EQ(kV6.Angle(), 3 / 2. * Radians::PI);
-  EXPECT_EQ(kV7.Angle(), 0 / 2. * Radians::PI);
+  EXPECT_EQ(vector3_.Angle(), 1 / 2. * Radians::PI);
+  EXPECT_EQ(vector4_.Angle(), 2 / 2. * Radians::PI);
+  EXPECT_EQ(vector5_.Angle(), 3 / 2. * Radians::PI);
+  EXPECT_EQ(vector6_.Angle(), 0 / 2. * Radians::PI);
 }
 
 TEST_F(VectorTest, Rotation) {
-  Vector v1 = kV7;
-  Vector v2 = kV7;
-  Vector v3 = kV7;
-  Vector v4 = kV7;
+  Vector v1;
+  Vector v2;
+  Vector v3;
+  Vector v4;
 
-  EXPECT_EQ(v1.Rotate(1 / 2. * Radians::PI), kV4);
-  EXPECT_EQ(v2.Rotate(2 / 2. * Radians::PI), kV5);
-  EXPECT_EQ(v3.Rotate(3 / 2. * Radians::PI), kV6);
-  EXPECT_EQ(v4.Rotate(4 / 2. * Radians::PI), kV7);
+  AssertAssignment(&v1, vector6_);
+  AssertAssignment(&v2, vector6_);
+  AssertAssignment(&v3, vector6_);
+  AssertAssignment(&v4, vector6_);
+
+  EXPECT_EQ(v1.Rotate(1 / 2. * Radians::PI), vector3_);
+  EXPECT_EQ(v2.Rotate(2 / 2. * Radians::PI), vector4_);
+  EXPECT_EQ(v3.Rotate(3 / 2. * Radians::PI), vector5_);
+  EXPECT_EQ(v4.Rotate(4 / 2. * Radians::PI), vector6_);
 }
 
 TEST_F(VectorTest, Addition) {
-  const Vector v1 = kV1 + kV2;
-  const Vector v2 = +kV1;
-  Vector v3 = kV1;
-  v3 += kV2;
+  Vector v1;
+  Vector v2;
+  Vector v3;
 
-  EXPECT_EQ(Point(kX1 + kX2, kY1 + kY2), v1.dest_);
-  EXPECT_EQ(Point(kX1, kY1), v2.dest_);
-  EXPECT_EQ(Point(kX1 + kX2, kY1 + kY2), v3.dest_);
+  AssertAssignment(&v1, vector0_ + vector1_);
+  AssertAssignment(&v2, +vector0_);
+  AssertAssignment(&v3, vector0_);
+  v3 += vector1_;
+
+  ExpectEqual(vector9_, v1);
+  ExpectEqual(vector0_, v2);
+  ExpectEqual(vector9_, v3);
 }
 
 TEST_F(VectorTest, Subtraction) {
-  const Vector v1 = kV1 - kV2;
-  const Vector v2 = -kV1;
-  Vector v3 = kV1;
-  v3 -= kV2;
+  Vector v1;
+  Vector v2;
+  Vector v3;
+  
+  AssertAssignment(&v1, vector0_ - vector1_);
+  AssertAssignment(&v2, -vector0_);
+  AssertAssignment(&v3, vector0_);
+  v3 -= vector1_;
 
-  EXPECT_EQ(Point(kX1 - kX2, kY1 - kY2), v1.dest_);
-  EXPECT_EQ(Point(-kX1, -kY1), v2.dest_);
-  EXPECT_EQ(Point(kX1 - kX2, kY1 - kY2), v3.dest_);
+  ExpectEqual(vector10_, v1);
+  ExpectEqual(vector11_, v2);
+  ExpectEqual(vector10_, v3);
 }
 
 TEST_F(VectorTest, ScalarProduct) {
   double k = 3.5;
 
-  const Vector v1 = kV1 * k;
-  const Vector v2 = k * kV1;
-  Vector v3 = kV1;
+  Vector v1;
+  Vector v2;
+  Vector v3;
+
+  AssertAssignment(&v1, vector0_ * k);
+  AssertAssignment(&v2, k * vector0_);
+  AssertAssignment(&v3, vector0_);
   v3 *= k;
 
-  EXPECT_EQ(Point(kX1 * k, kY1 * k), v1.dest_);
-  EXPECT_EQ(Point(kX1 * k, kY1 * k), v2.dest_);
-  EXPECT_EQ(Point(kX1 * k, kY1 * k), v3.dest_);
+  ExpectEqual(vector12_, v1);
+  ExpectEqual(vector12_, v2);
+  ExpectEqual(vector12_, v3);
 }
 
 TEST_F(VectorTest, ScalarDivision) {
   double k = 3.5;
 
-  const Vector v1 = kV1 / k;
-  Vector v2 = kV1;
+  Vector v1;
+  Vector v2;
+
+  AssertAssignment(&v1, vector12_ / k);
+  AssertAssignment(&v2, vector12_);
   v2 /= k;
 
-  EXPECT_EQ(Point(kX1 / k, kY1 / k), v1.dest_);
-  EXPECT_EQ(Point(kX1 / k, kY1 / k), v2.dest_);
+  ExpectEqual(vector0_, v1);
+  ExpectEqual(vector0_, v2);
 }
 
 TEST_F(VectorTest, EqualOperator) {
-  EXPECT_TRUE(kV1 == kV1);
-  EXPECT_FALSE(kV4 == kV6);
-  EXPECT_FALSE(kV5 == kV7);
+  EXPECT_TRUE(vector0_ == vector0_);
+  EXPECT_FALSE(vector3_ == vector5_);
+  EXPECT_FALSE(vector4_ == vector6_);
 }
 
 TEST_F(VectorTest, NotEqualOperator) {
-  EXPECT_FALSE(kV1 != kV1);
-  EXPECT_TRUE(kV4 != kV6);
-  EXPECT_TRUE(kV5 != kV7);
+  EXPECT_FALSE(vector0_ != vector0_);
+  EXPECT_TRUE(vector3_ != vector5_);
+  EXPECT_TRUE(vector4_ != vector6_);
 }
 
 TEST_F(VectorTest, Canonical) {
