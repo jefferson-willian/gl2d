@@ -1,5 +1,7 @@
 #include "gl2d/include/radians.h"
 
+#include <cmath>
+
 namespace gl2d {
 
 Radians::Radians(double radians) : radians_(radians) {}
