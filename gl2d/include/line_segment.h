@@ -51,10 +51,6 @@ class LineSegment {
   bool operator!=(const LineSegment& rhs) const;
 
   friend class LineSegmentTest;
-  FRIEND_TEST(LineSegmentTest, Constructor);
-  FRIEND_TEST(LineSegmentTest, Setters);
-  FRIEND_TEST(LineSegmentTest, Translation);
-  FRIEND_TEST(LineSegmentTest, Rotation);
 };
 
 }  // namespace gl2d
