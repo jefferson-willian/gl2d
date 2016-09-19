@@ -14,5 +14,5 @@ include_directories(../googletest/googletest/include ../)
 # Directories to link libraries.
 link_directories()
 
-# Executable.
+# Static library.
 add_library(gl2d ${SOURCES})
