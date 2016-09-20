@@ -5,7 +5,7 @@ project(graphics)
 #set(CMAKE_BUILD_TYPE Release)
 
 #Bring the headers, such as Student.h into the project
-include_directories(../ ../../esp/lib/googletest/googletest/include)
+include_directories(../ ../googletest/googletest/include)
 
 #However, the file(GLOB...) allows for wildcard additions:
 file(GLOB SOURCES "src/*.cpp")
