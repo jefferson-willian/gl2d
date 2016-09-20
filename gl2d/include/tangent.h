@@ -11,6 +11,8 @@ namespace gl2d {
 
 std::vector<LineSegment> Tangent(const Point& p, const Circle& c);
 
+std::pair<LineSegment, LineSegment> Tangent(const Circle& c1, const Circle& c2);
+
 }  // namespace gl2d
 
 #endif  // GL2D_INCLUDE_TANGENT_H_

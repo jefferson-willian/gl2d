@@ -36,5 +36,19 @@ std::vector<LineSegment> Tangent(const Point& p, const Circle& c) {
   return lines;
 }
 
+std::pair<LineSegment, LineSegment> Tangent(const Circle& c1,
+    const Circle& c2) {
+  // Create two lines from center-to-center in both circles.
+  LineSegment l1(c1.Center(), c2.Center());
+  LineSegment l2(c1.Center(), c2.Center());
+
+  // Translate in normal direction (both positive and negative) with radius
+  // magnitude.
+  l1.Translate(l1.Normal() * c1.Radius());
+  l2.Translate(-l1.Normal() * c1.Radius());
+
+  return {l1, l2};
+}
+
 }  // namespace gl2d
 
