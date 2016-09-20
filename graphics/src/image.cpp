@@ -13,6 +13,7 @@ Image::Image(double proportion) : proportion_(proportion * 0.1) {
     << "\\newcommand{\\Circle}[4]{\\draw [#4] (#1,#2) circle (#3);}\n"
     << "\\newcommand{\\LineSegment}[5]{\\draw [#5] (#1,#2) -- (#3,#4);}\n"
     << "\\newcommand{\\Vector}[5]{\\draw [#5] (#1,#2) -> (#3,#4);}\n"
+    << "\\newcommand{\\Arc}[6]{\\draw[#6] (#1,#2) ++(#3:#5) arc (#3:#4:#5);}\n"
     << "\\begin{document}\n"
     << "\\begin{tikzpicture}\n";
 

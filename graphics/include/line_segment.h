@@ -13,8 +13,6 @@ class LineSegment : public gl2d::LineSegment, public Shape {
   const std::string latex_model(const std::string& x_1, const std::string& y_1,
       const std::string& x_2, const std::string& y_2) const;
 
-  std::string params_;
-
  public:
   using gl2d::LineSegment::LineSegment;
 
@@ -24,10 +22,13 @@ class LineSegment : public gl2d::LineSegment, public Shape {
   const std::string Latex(double proportion) const override;
 
   void SetArrow() {
-    if (!params_.empty())
-      params_ += ",";
-    params_ += "->,>=stealth";
+    add_param("->,>=stealth");
   }
+
+  void SetColor(const std::string& color) {
+    add_param(color);
+  }
+
 };
 
 }  // namespace graphics

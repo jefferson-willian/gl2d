@@ -28,6 +28,9 @@ class Radians {
   static Radians Acos(double value);
   static Radians Asin(double value);
 
+  double val() const { return radians_; }
+  double degree() const { return radians_ / 3.141592653589 * 180.; }
+
   // Mathematical operators.
   Radians& operator*=(double k);
   Radians& operator+=(double k);
