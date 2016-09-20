@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.9)
 
 project(graphics)
 
-#set(CMAKE_BUILD_TYPE Release)
+# Flag to compile using c+11.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 #Bring the headers, such as Student.h into the project
 include_directories(../ ../gl2d/external/googletest/googletest/include)
