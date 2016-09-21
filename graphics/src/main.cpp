@@ -2,27 +2,32 @@
 #include <fstream>
 #include <vector>
 
+#include <cstdlib>
+
 #include "graphics/include/circle.h"
 #include "graphics/include/line_segment.h"
 #include "graphics/include/point.h"
 #include "graphics/include/image.h"
 #include "graphics/include/arc.h"
+#include "graphics/include/dubin.h"
 
 #include "gl2d/include/tangent.h"
 #include "gl2d/include/line_segment.h"
+#include "gl2d/include/distance.h"
 #include "gl2d/include/point.h"
 #include "gl2d/include/vector.h"
 #include "gl2d/include/radians.h"
 
-std::pair<graphics::Circle, graphics::Circle> TangentCircles(const gl2d::LineSegment& line, double radius) {
-  gl2d::Vector v(line.a(), line.b());
-  v.Normalize();
-  v *= radius;
+std::pair<gl2d::Circle, gl2d::Circle> TangentCircles(const gl2d::Point& orig,
+    gl2d::Vector dir, double radius) {
+  dir.Normalize();
+  dir *= radius;
 
-  v.Rotate(gl2d::Radians::PI / 2);
-  graphics::Circle c1(line.a() + v.Point(), radius);
-  v.Rotate(gl2d::Radians::PI);
-  graphics::Circle c2(line.a() + v.Point(), radius);
+  dir.Rotate(gl2d::Radians::PI / 2);
+  gl2d::Circle c1(orig + dir.Point(), radius);
+
+  dir.Rotate(-gl2d::Radians::PI);
+  gl2d::Circle c2(orig + dir.Point(), radius);
 
   return {c1, c2};
 }
@@ -33,23 +38,28 @@ void NormalizeLine(gl2d::LineSegment* line) {
   line->b(line->a() + v.Point());
 }
 
-graphics::LineSegment TangentLL(const gl2d::Circle& c1, const gl2d::Circle& c2) {
-  return gl2d::Tangent(c1, c2).second;
+gl2d::Arc GetArc(const gl2d::Circle& c, const gl2d::Point& p1, const gl2d::Point& p2) {
+  return gl2d::Arc(c, gl2d::Vector(c.Center(), p1).Angle(),
+      gl2d::Vector(c.Center(), p2).Angle());
 }
 
-graphics::LineSegment TangentRR(const gl2d::Circle& c1, const gl2d::Circle& c2) {
-  return gl2d::Tangent(c1, c2).first;
-}
+std::pair<gl2d::Circle, gl2d::Circle> GetMidCircle(const gl2d::Circle& c1, const gl2d::Circle& c2) {
+  gl2d::Radians myangle = gl2d::Radians::Acos((gl2d::Distance(c1.Center(), c2.Center()) / 2) / (c1.Radius() * 2));
+  graphics::Circle midCircle1, midCircle2;
 
-graphics::Arc GetArc(const gl2d::Circle& c, const gl2d::Point& p1, const gl2d::Point& p2) {
-  graphics::Arc arc(c.Center(), c.Radius());
+  gl2d::Vector v(c1.Center(), c2.Center());
+  v.Normalize();
+  v *= 2 * c1.Radius();
 
-  gl2d::Vector v1(c.Center(), p1);
-  arc.RadiansStart(v1.Angle());
-  gl2d::Vector v2(c.Center(), p2);
-  arc.RadiansEnd(v2.Angle());
+  v.Rotate(myangle);
+  midCircle1.Center(c1.Center() + v.Point());
+  midCircle1.Radius(c1.Radius());
 
-  return arc;
+  v.Rotate(-2 * myangle);
+  midCircle2.Center(c1.Center() + v.Point());
+  midCircle2.Radius(c1.Radius());
+
+  return {midCircle1, midCircle2};
 }
 
 int main(int argc, char** argv) {
@@ -57,6 +67,20 @@ int main(int argc, char** argv) {
 
   graphics::LineSegment w1(gl2d::Point(0, 0), gl2d::Point(1, 1));
   graphics::LineSegment w2(gl2d::Point(4, -2), gl2d::Point(-1, 1));
+
+  /*
+  graphics::LineSegment w1(gl2d::Point(-0.5, 0), gl2d::Point(-0.5, 1));
+  graphics::LineSegment w2(gl2d::Point(0.5, 0), gl2d::Point(0.5, 1));
+  */
+
+  srand(time(0));
+
+  /*
+  w1.a(gl2d::Point(rand() % 20 - 10, rand() % 20 - 10));
+  w1.b(gl2d::Point(rand() % 20 - 10, rand() % 20 - 10));
+  w2.a(gl2d::Point(rand() % 20 - 10, rand() % 20 - 10));
+  w2.b(gl2d::Point(rand() % 20 - 10, rand() % 20 - 10));
+  */
 
   w1.SetArrow();
   w1.SetColor("blue");
@@ -66,29 +90,114 @@ int main(int argc, char** argv) {
   NormalizeLine(&w1);
   NormalizeLine(&w2);
 
+  gl2d::Point wayOutOrigin = w1.a();
+  gl2d::Point wayInOrigin = w2.a();
+
+  gl2d::Vector wayOutDirection = w1.Normal();
+  gl2d::Vector wayInDirection = w2.Normal();
+
+  wayOutDirection.Rotate(-gl2d::Radians::PI / 2);
+  wayInDirection.Rotate(-gl2d::Radians::PI / 2);
+
+  auto paths = dubin::Path::GetAllPaths(wayOutOrigin, wayOutDirection, wayInOrigin, wayInDirection, 1);
+
+  img.Add(&w1);
+  img.Add(&w2);
+
+  for (auto path : paths) {
+    img.Add(new graphics::Arc(path.out_));
+    img.Add(new graphics::LineSegment(path.line_segment_));
+    img.Add(new graphics::Arc(path.in_));
+  }
+
+  std::cout << img.Latex() << '\n';
+
+  return 0;
+
   // Start DUBINS
-  auto outCircles = TangentCircles(w1, 1);
-  auto inCircles = TangentCircles(w2, 1);
+  auto outCircles = TangentCircles(wayOutOrigin, wayOutDirection, 1);
+  auto inCircles = TangentCircles(wayInOrigin, wayInDirection, 1);
 
-  auto tline1 = TangentLL(outCircles.first, inCircles.first);
-  img.Add(&tline1);
+  std::vector<gl2d::LineSegment> lines;
 
-  auto tline2 = TangentRR(outCircles.second, inCircles.second);
-  img.Add(&tline2);
+  lines = gl2d::Tangent(outCircles.second, inCircles.second);
+  if (lines.size() >= 1) {
+    auto line = graphics::LineSegment(lines[0]);
+    img.Add(new graphics::LineSegment(line));
 
-  auto arc1 = GetArc(outCircles.first, w1.a(), tline1.a());
-  auto arc2 = GetArc(inCircles.first, tline1.b(), w2.a());
+    auto arc_out = GetArc(outCircles.second, line.a(), wayOutOrigin);
+    auto arc_in = GetArc(inCircles.second, wayInOrigin, line.b());
 
-  auto arc3 = GetArc(outCircles.second, tline2.a(), w1.a());
-  auto arc4 = GetArc(inCircles.second, w2.a(), tline2.b());
+    img.Add(new graphics::Arc(arc_out));
+    img.Add(new graphics::Arc(arc_in));
+  }
 
+  lines = gl2d::Tangent(outCircles.first, inCircles.first);
+  if (lines.size() >= 2) {
+    auto line = graphics::LineSegment(lines[1]);
+    img.Add(new graphics::LineSegment(line));
+
+    auto arc_out = GetArc(outCircles.first, wayOutOrigin, line.a());
+    auto arc_in = GetArc(inCircles.first, line.b(), wayInOrigin);
+
+    img.Add(new graphics::Arc(arc_out));
+    img.Add(new graphics::Arc(arc_in));
+  }
+
+  lines = gl2d::Tangent(outCircles.second, inCircles.first);
+  if (lines.size() >= 3) {
+    auto line = graphics::LineSegment(lines[2]);
+    img.Add(new graphics::LineSegment(line));
+
+    auto arc_out = GetArc(outCircles.second, line.a(), wayOutOrigin);
+    auto arc_in = GetArc(inCircles.first, line.b(), wayInOrigin);
+
+    img.Add(new graphics::Arc(arc_out));
+    img.Add(new graphics::Arc(arc_in));
+  }
+
+  lines = gl2d::Tangent(outCircles.first, inCircles.second);
+  if (lines.size() >= 4) {
+    auto line = graphics::LineSegment(lines[3]);
+    img.Add(new graphics::LineSegment(line));
+
+    auto arc_out = GetArc(outCircles.first, wayOutOrigin, line.a());
+    auto arc_in = GetArc(inCircles.second, wayInOrigin, line.b());
+
+    img.Add(new graphics::Arc(arc_out));
+    img.Add(new graphics::Arc(arc_in));
+  }
+
+  /*
   img.Add(&arc1);
   img.Add(&arc2);
   img.Add(&arc3);
   img.Add(&arc4);
+  img.Add(&arc5);
+  img.Add(&arc6);
+  img.Add(&arc7);
+  img.Add(&arc8);
+  */
 
   img.Add(&w1);
   img.Add(&w2);
+
+  auto c1 = GetMidCircle(outCircles.first, inCircles.first).first;
+  auto c2 = GetMidCircle(outCircles.second, inCircles.second).second;
+
+  //img.Add(&c1);
+  //img.Add(&c2);
+
+
+  //img.Add(&outCircles.first);
+  //img.Add(&outCircles.second);
+  //img.Add(&inCircles.first);
+  //img.Add(&inCircles.second);
+  /*
+  auto lines = gl2d::Tangent(outCircles.first, inCircles.first);
+  img.Add(new graphics::LineSegment(lines[2]));
+  img.Add(new graphics::LineSegment(lines[3]));
+  */
 
   std::cout << img.Latex() << '\n';
 

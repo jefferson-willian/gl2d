@@ -16,6 +16,8 @@ class Arc : public gl2d::Arc, public Shape {
 
  public:
   using gl2d::Arc::Arc;
+
+  Arc(const gl2d::Arc& arc) : gl2d::Arc(arc) {}
   ~Arc() = default;
 
   const std::string Latex(double proportion) const override;

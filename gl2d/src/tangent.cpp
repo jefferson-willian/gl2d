@@ -36,8 +36,7 @@ std::vector<LineSegment> Tangent(const Point& p, const Circle& c) {
   return lines;
 }
 
-std::pair<LineSegment, LineSegment> Tangent(const Circle& c1,
-    const Circle& c2) {
+std::vector<LineSegment> Tangent(const Circle& c1, const Circle& c2) {
   // Create two lines from center-to-center in both circles.
   LineSegment l1(c1.Center(), c2.Center());
   LineSegment l2(c1.Center(), c2.Center());
@@ -47,7 +46,40 @@ std::pair<LineSegment, LineSegment> Tangent(const Circle& c1,
   l1.Translate(l1.Normal() * c1.Radius());
   l2.Translate(-l1.Normal() * c1.Radius());
 
-  return {l1, l2};
+  std::vector<LineSegment> lines;
+
+  lines.emplace_back(l1);
+  lines.emplace_back(l2);
+
+  if (util::cmpD(Distance(c1.Center(), c2.Center()), c1.Radius() + c2.Radius()) >= 0) {
+    Radians crossAngle = Radians::Acos(c1.Radius() * 2 / Distance(c1.Center(),
+          c2.Center()));
+
+    LineSegment l3, l4;
+
+    Vector v(c1.Center(), c2.Center());
+    v.Normalize();
+    v *= c1.Radius();
+
+    v.Rotate(crossAngle);
+    l3.a(c1.Center() + v.Point());
+    v.Rotate(-2 * crossAngle);
+    l4.a(c1.Center() + v.Point());
+
+    v = Vector(c2.Center(), c1.Center());
+    v.Normalize();
+    v *= c2.Radius();
+
+    v.Rotate(crossAngle);
+    l3.b(c2.Center() + v.Point());
+    v.Rotate(-2 * crossAngle);
+    l4.b(c2.Center() + v.Point());
+
+    lines.emplace_back(l3);
+    lines.emplace_back(l4);
+  }
+
+  return lines;
 }
 
 }  // namespace gl2d

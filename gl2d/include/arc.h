@@ -14,8 +14,10 @@ class Arc : public Circle {
   Radians end_;
 
  public:
-  explicit Arc(double x, double y, double r);
-  explicit Arc(const Point& center, double r);
+  using Circle::Circle;
+
+  explicit Arc(const Circle& circle, Radians start, Radians end);
+  explicit Arc(const Circle& circle, const Point& p1, const Point& p2);
   Arc() = default;
   ~Arc() = default;
 
