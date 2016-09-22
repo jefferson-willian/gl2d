@@ -10,4 +10,11 @@ Arc::Arc(const Circle& circle, const Point& p1, const Point& p2) :
   Circle(circle), start_(Vector(circle.Center(), p1).Angle()),
   end_(Vector(circle.Center(), p2).Angle()) {}
 
+double Arc::Length() const {
+  Radians l = end_ - start_;
+  if (util::cmpD(l.val(), 0) < 0)
+    l += Radians::TWOPI;
+  return l.val() * radius_;
+}
+
 }  // namespace gl2d

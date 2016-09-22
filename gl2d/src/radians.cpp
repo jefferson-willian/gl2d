@@ -4,7 +4,23 @@
 
 namespace gl2d {
 
-Radians::Radians(double radians) : radians_(radians) {}
+namespace {
+
+const double pi_ = 3.14159265358979323846264338327950288419716;
+const double twopi_ = 2 * pi_;
+
+double prune(double rad) {
+  while (util::cmpD(rad, 0) < 0) rad += twopi_;
+  while (util::cmpD(rad, twopi_) > 0) rad -= twopi_;
+
+  return rad;
+}
+
+}  // namespace
+
+Radians::Radians(double radians) : radians_(radians) {
+  radians_ = prune(radians);
+}
 
 Radians& Radians::Normalize() {
   const double twopi = Radians::TWOPI.radians_;
@@ -16,49 +32,23 @@ Radians& Radians::Normalize() {
 }
 
 Radians& Radians::operator*=(double k) {
-  radians_ *= k;
-  return *this;
-}
-
-Radians& Radians::operator+=(double k) {
-  radians_ += k;
-  return *this;
-}
-
-Radians& Radians::operator-=(double k) {
-  radians_ -= k;
+  radians_ = prune(radians_ * k);
   return *this;
 }
 
 Radians& Radians::operator/=(double k) {
-  radians_ /= k;
-  return *this;
-}
-
-Radians& Radians::operator*=(const Radians& r) {
-  radians_ *= r.radians_;
+  radians_ = prune(radians_ / k);
   return *this;
 }
 
 Radians& Radians::operator+=(const Radians& r) {
-  radians_ += r.radians_;
+  radians_ = prune(radians_ + r.radians_);
   return *this;
 }
 
 Radians& Radians::operator-=(const Radians& r) {
-  radians_ -= r.radians_;
+  radians_ = prune(radians_ - r.radians_);
   return *this;
-}
-
-Radians& Radians::operator/=(const Radians& r) {
-  radians_ /= r.radians_;
-  return *this;
-}
-
-Radians operator*(const Radians& r1, const Radians& r2) {
-  Radians t = r1;
-  t *= r2;
-  return t;
 }
 
 Radians operator*(const Radians& radians, double k) {
@@ -83,18 +73,6 @@ Radians operator+(const Radians& radians) {
   return radians;
 }
 
-Radians operator+(const Radians& radians, double k) {
-  Radians t = radians;
-  t += k;
-  return t;
-}
-
-Radians operator+(double k, const Radians& radians) {
-  Radians t = radians;
-  t += k;
-  return t;
-}
-
 Radians operator-(const Radians& r1, const Radians& r2) {
   Radians t = r1;
   t -= r2;
@@ -103,25 +81,7 @@ Radians operator-(const Radians& r1, const Radians& r2) {
 
 Radians operator-(const Radians& radians) {
   Radians t = radians;
-  t.radians_ = -t.radians_;
-  return t;
-}
-
-Radians operator-(const Radians& radians, double k) {
-  Radians t = radians;
-  t -= k;
-  return t;
-}
-
-Radians operator-(double k, const Radians& radians) {
-  Radians t = -radians;
-  t += k;
-  return t;
-}
-
-Radians operator/(const Radians& r1, const Radians& r2) {
-  Radians t = r1;
-  t /= r2;
+  t.radians_ = twopi_ - t.radians_;
   return t;
 }
 
@@ -131,14 +91,8 @@ Radians operator/(const Radians& radians, double k) {
   return t;
 }
 
-Radians operator/(double k, const Radians& radians) {
-  Radians t(k);
-  t /= radians;
-  return t;
-}
-
 Radians& Radians::operator=(double k) {
-  radians_ = k;
+  radians_ = prune(k);
   return *this;
 }
 
@@ -172,7 +126,7 @@ Radians Radians::Asin(double value) {
   return rad;
 }
 
-const Radians Radians::PI(3.14159265358979323846264338327950288419716939937510);
-const Radians Radians::TWOPI(2 * Radians::PI);
+const Radians Radians::PI(pi_);
+const Radians Radians::TWOPI(twopi_);
 
 }  // namespace gl2d

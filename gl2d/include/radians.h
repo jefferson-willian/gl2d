@@ -33,29 +33,20 @@ class Radians {
 
   // Mathematical operators.
   Radians& operator*=(double k);
-  Radians& operator+=(double k);
-  Radians& operator-=(double k);
   Radians& operator/=(double k);
 
-  Radians& operator*=(const Radians& r);
+  //Radians& operator*=(const Radians& r);
   Radians& operator+=(const Radians& r);
   Radians& operator-=(const Radians& r);
-  Radians& operator/=(const Radians& r);
+  //Radians& operator/=(const Radians& r);
 
-  friend Radians operator*(const Radians& r1, const Radians& r2);
   friend Radians operator*(const Radians& radians, double k);
   friend Radians operator*(double k, const Radians& radians);
   friend Radians operator+(const Radians& r1, const Radians& r2);
   friend Radians operator+(const Radians& radians);
-  friend Radians operator+(const Radians& radians, double k);
-  friend Radians operator+(double k, const Radians& radians);
   friend Radians operator-(const Radians& r1, const Radians& r2);
   friend Radians operator-(const Radians& radians);
-  friend Radians operator-(const Radians& radians, double k);
-  friend Radians operator-(double k, const Radians& radians);
-  friend Radians operator/(const Radians& r1, const Radians& r2);
   friend Radians operator/(const Radians& radians, double k);
-  friend Radians operator/(double k, const Radians& radians);
 
   Radians& operator=(double k);
 

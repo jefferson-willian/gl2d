@@ -9,6 +9,8 @@
 #include "gl2d/include/vector.h"
 #include "gl2d/include/tangent.h"
 
+#include <vector>
+
 namespace dubin {
 
 namespace {
@@ -72,6 +74,7 @@ std::vector<Path> Path::GetAllPaths(const gl2d::Point& a, const gl2d::Vector& d1
     }
   }
 
+  /*
   auto c1 = ca.first;
   auto c2 = cb.first;
 
@@ -87,11 +90,29 @@ std::vector<Path> Path::GetAllPaths(const gl2d::Point& a, const gl2d::Vector& d1
 
   gl2d::Arc rad3(c3, gl2d::Vector(c3.Center(), c1.Center()).Angle(),
       gl2d::Vector(c3.Center(), c2.Center()).Angle());
-
-
-
+      */
 
   return paths;
+}
+
+Path* Path::ShortestPath(const gl2d::Point& a, const gl2d::Vector& d1,
+    const gl2d::Point& b, const gl2d::Vector& d2, double curvature) {
+  const std::vector<Path>& paths = GetAllPaths(a, d1, b, d2, curvature);
+
+  if (paths.empty())
+    return nullptr;
+
+  int id = 0;
+  double best = paths[0].Length();
+  for (int i = 1; i < paths.size(); ++i) {
+    const Path& path = paths[i];
+    if (gl2d::util::cmpD(path.Length(), best) < 0) {
+      id = i;
+      best = path.Length();
+    }
+  }
+
+  return new Path(paths[id]);
 }
 
 }  // namespace dubin

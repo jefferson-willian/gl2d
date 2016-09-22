@@ -34,6 +34,9 @@ class Path {
 
   static std::vector<Path> GetAllPaths(const gl2d::Point& a, const gl2d::Vector& d1,
       const gl2d::Point& b, const gl2d::Vector& d2, double curvature);
+
+  static Path* ShortestPath(const gl2d::Point& a, const gl2d::Vector& d1,
+      const gl2d::Point& b, const gl2d::Vector& d2, double curvature);
 };
 
 }  // namespace dubin

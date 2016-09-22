@@ -24,6 +24,8 @@ class Arc : public Circle {
   void RadiansStart(const Radians& start) { start_ = start; }
   void RadiansEnd(const Radians& end) { end_ = end; }
 
+  double Length() const;
+
   // Friend test classes.
   friend class ArcTest;
 };

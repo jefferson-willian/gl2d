@@ -25,13 +25,13 @@ class RadiansTest : public ::testing::Test {
   virtual void SetUp() {
     radian0_.radians_ = kPi;
     radian1_.radians_ = 2 * kPi;
-    radian2_.radians_ = 3 * kPi;
-    radian3_.radians_ = -kPi;
-    radian4_.radians_ = 2 * kPi * kPi;
+    radian2_.radians_ = kPi;
+    radian3_.radians_ = kPi;
+    radian4_.radians_ = 0.88965288066;
     radian5_.radians_ = 0;
     radian6_.radians_ = kPi / 2;
-    radian7_.radians_ = 3 * kPi;
-    radian8_.radians_ = 3 / 2. * kPi;
+    radian7_.radians_ = kPi;
+    radian8_.radians_ = (3 / 2.) * kPi;
   }
 
   virtual void ExpectEqual(const Radians& radians1, const Radians& radians2) {
@@ -105,20 +105,13 @@ TEST_F(RadiansTest, Addition) {
   Radians r6;
 
   AssertAssignment(&r1, radian0_ + radian1_);
-  AssertAssignment(&r2, radian0_ + 2 * kPi);
-  AssertAssignment(&r3, kPi + radian1_);
   AssertAssignment(&r4, radian0_);
-  AssertAssignment(&r5, radian0_);
   AssertAssignment(&r6, +radian2_);
 
   r4 += radian1_;
-  r5 += 2 * kPi;
 
   ExpectEqual(r1, radian2_);
-  ExpectEqual(r2, radian2_);
-  ExpectEqual(r3, radian2_);
   ExpectEqual(r4, radian2_);
-  ExpectEqual(r5, radian2_);
   ExpectEqual(r6, radian2_);
 }
 
@@ -131,20 +124,13 @@ TEST_F(RadiansTest, Subtraction) {
   Radians r6;
 
   AssertAssignment(&r1, radian2_ - radian1_);
-  AssertAssignment(&r2, radian2_ - 2 * kPi);
-  AssertAssignment(&r3, 3 * kPi - radian1_);
   AssertAssignment(&r4, radian2_);
-  AssertAssignment(&r5, radian2_);
   AssertAssignment(&r6, -radian3_);
 
   r4 -= radian1_;
-  r5 -= 2 * kPi;
 
   ExpectEqual(r1, radian0_);
-  ExpectEqual(r2, radian0_);
-  ExpectEqual(r3, radian0_);
   ExpectEqual(r4, radian0_);
-  ExpectEqual(r5, radian0_);
   ExpectEqual(r6, radian0_);
 }
 
@@ -155,19 +141,14 @@ TEST_F(RadiansTest, Product) {
   Radians r4;
   Radians r5;
 
-  AssertAssignment(&r1, radian0_ * radian1_);
   AssertAssignment(&r2, radian0_ * (2 * kPi));
   AssertAssignment(&r3, kPi * radian1_);
-  AssertAssignment(&r4, radian0_);
   AssertAssignment(&r5, radian0_);
 
-  r4 *= radian1_;
   r5 *= 2 * kPi;
 
-  ExpectEqual(r1, radian4_);
   ExpectEqual(r2, radian4_);
   ExpectEqual(r3, radian4_);
-  ExpectEqual(r4, radian4_);
   ExpectEqual(r5, radian4_);
 }
 
@@ -178,20 +159,13 @@ TEST_F(RadiansTest, Division) {
   Radians r4;
   Radians r5;
 
-  AssertAssignment(&r1, radian4_ / radian1_);
-  AssertAssignment(&r2, radian4_ / (2 * kPi));
-  AssertAssignment(&r3, (2 * kPi * kPi) / radian1_);
-  AssertAssignment(&r4, radian4_);
-  AssertAssignment(&r5, radian4_);
+  AssertAssignment(&r2, radian1_ / 2);
+  AssertAssignment(&r5, radian0_);
 
-  r4 /= radian1_;
-  r5 /= 2 * kPi;
+  r5 /= 2;
 
-  ExpectEqual(r1, radian0_);
   ExpectEqual(r2, radian0_);
-  ExpectEqual(r3, radian0_);
-  ExpectEqual(r4, radian0_);
-  ExpectEqual(r5, radian0_);
+  ExpectEqual(r5, radian6_);
 }
 
 TEST_F(RadiansTest, DoubleAssignment) {
