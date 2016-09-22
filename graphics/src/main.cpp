@@ -87,6 +87,10 @@ int main(int argc, char** argv) {
   w2.SetArrow();
   w2.SetColor("blue");
 
+  w2 = w1;
+  w2.Rotate(gl2d::Radians::PI / 180.);
+  w2.a(w1.a());
+
   NormalizeLine(&w1);
   NormalizeLine(&w2);
 
@@ -106,7 +110,10 @@ int main(int argc, char** argv) {
 
   for (auto path : paths) {
     img.Add(new graphics::Arc(path.out_));
-    img.Add(new graphics::LineSegment(path.line_segment_));
+    if (path.is_csc_)
+      img.Add(new graphics::LineSegment(path.line_segment_));
+    else
+      img.Add(new graphics::Arc(path.mid_circle_));
     img.Add(new graphics::Arc(path.in_));
   }
 

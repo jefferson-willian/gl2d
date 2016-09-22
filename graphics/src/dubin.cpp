@@ -5,6 +5,7 @@
 #include "gl2d/include/point.h"
 #include "gl2d/include/arc.h"
 #include "gl2d/include/radians.h"
+#include "gl2d/include/distance.h"
 #include "gl2d/include/vector.h"
 #include "gl2d/include/tangent.h"
 
@@ -42,18 +43,53 @@ std::vector<Path> Path::GetAllPaths(const gl2d::Point& a, const gl2d::Vector& d1
 
   std::vector<gl2d::LineSegment> lines;
 
-  lines = gl2d::Tangent(ca.second, cb.second);
-  if (lines.size() >= 1) {
-    const gl2d::LineSegment& line = gl2d::LineSegment(lines[0]);
+  // Curves permutation. RR, LL, RR, RL, LR.
+  int ca_i[] = {1, 0, 1, 0};
+  int cb_i[] = {1, 0, 0, 1};
 
-    Path p;
-    p.line_segment_ = line;
-    p.out_ = gl2d::Arc(ca.second, line.a(), a);
-    p.in_ = gl2d::Arc(cb.second, b, line.b());
-    p.is_csc_ = true;
+  // Get CSC.
+  for (int i = 0; i < 4; ++i) {
+    const gl2d::Circle& cai = ca_i[i] == 0 ? ca.first : ca.second;
+    const gl2d::Circle& cbi = cb_i[i] == 0 ? cb.first : cb.second;
 
-    paths.emplace_back(p);
+    lines = gl2d::Tangent(cai, cbi);
+
+    if (lines.size() > i) {
+      const gl2d::LineSegment& line = gl2d::LineSegment(lines[i]);
+
+      const gl2d::Point& p1 = ca_i[i] == 0 ? a : line.a();
+      const gl2d::Point& p2 = ca_i[i] == 0 ? line.a() : a;
+      const gl2d::Point& p3 = cb_i[i] == 0 ? line.b() : b;
+      const gl2d::Point& p4 = cb_i[i] == 0 ? b : line.b();
+
+      Path p;
+      p.line_segment_ = line;
+      p.out_ = gl2d::Arc(cai, p1, p2);
+      p.in_  = gl2d::Arc(cbi, p3, p4);
+      p.is_csc_ = true;
+
+      paths.emplace_back(p);
+    }
   }
+
+  auto c1 = ca.first;
+  auto c2 = cb.first;
+
+  gl2d::Point cent = c1.Center();
+  gl2d::Vector v(c1.Center(), c2.Center());
+  v.Normalize();
+  v *= 2 * c1.Radius();
+  v.Rotate(gl2d::Radians::Acos(gl2d::Distance(c1.Center(), c2.Center()) /
+        c1.Radius() / 4));
+  cent.Translate(v);
+  gl2d::Circle c3(cent, c1.Radius());
+
+
+  gl2d::Arc rad3(c3, gl2d::Vector(c3.Center(), c1.Center()).Angle(),
+      gl2d::Vector(c3.Center(), c2.Center()).Angle());
+
+
+
 
   return paths;
 }
