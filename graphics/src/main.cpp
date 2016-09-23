@@ -63,7 +63,7 @@ std::pair<gl2d::Circle, gl2d::Circle> GetMidCircle(const gl2d::Circle& c1, const
 }
 
 int main(int argc, char** argv) {
-  return 0;
+  /*
   std::vector<gl2d::Circle> neighborhoods;
 
   int N = atoi(argv[1]);
@@ -89,19 +89,19 @@ int main(int argc, char** argv) {
               gl2d::Vector w1 = gl2d::Vector::i;
               gl2d::Vector w2 = gl2d::Vector::i;
 
-              w1.Rotate((gl2d::Radians::TWOPI * u) / Q);
+              w1.Rotate(gl2d::Radians::TWOPI * ((double) u / Q));
               w1 *= neighborhoods[i].Radius();
               w1 += gl2d::Vector(neighborhoods[i].Center());
 
-              w2.Rotate((gl2d::Radians::TWOPI * v) / Q);
+              w2.Rotate(gl2d::Radians::TWOPI * ((double) v / Q));
               w2 *= neighborhoods[j].Radius();
               w2 += gl2d::Vector(neighborhoods[j].Center());
 
               gl2d::Vector v1 = gl2d::Vector::i;
               gl2d::Vector v2 = gl2d::Vector::i;
 
-              v1.Rotate((gl2d::Radians::TWOPI * a) / A);
-              v2.Rotate((gl2d::Radians::TWOPI * b) / A);
+              v1.Rotate(gl2d::Radians::TWOPI * ((double) a / A));
+              v2.Rotate(gl2d::Radians::TWOPI * ((double) b / A));
 
               auto path = dubin::Path::ShortestPath(w1.Point(), v1, w2.Point(), v2, R);
 
@@ -109,10 +109,9 @@ int main(int argc, char** argv) {
                 std::cout << path->Length() << std::endl;
               else
                 std::cout << 0 << std::endl;
-              /*
-              dist[i][j][u][v][a][b] = dubinDubinsCurve::GetMinimumCurve(w1.Point(),
-                  v1, w2.Point(), v2, R).Length();
-                  */
+              
+              //dist[i][j][u][v][a][b] = dubinDubinsCurve::GetMinimumCurve(w1.Point(),
+              //    v1, w2.Point(), v2, R).Length();
             }
           }
         }
@@ -121,12 +120,13 @@ int main(int argc, char** argv) {
   }
 
   return 0;
+  */
 
 
   graphics::Image img(10);
 
-  graphics::LineSegment w1(gl2d::Point(0, 0), gl2d::Point(1, 1));
-  graphics::LineSegment w2(gl2d::Point(4, -2), gl2d::Point(-1, 1));
+  graphics::LineSegment w1(gl2d::Point(0, 0), gl2d::Point(0, 1));
+  graphics::LineSegment w2(gl2d::Point(1, 0), gl2d::Point(1, 1));
 
   /*
   graphics::LineSegment w1(gl2d::Point(-0.5, 0), gl2d::Point(-0.5, 1));
@@ -146,10 +146,6 @@ int main(int argc, char** argv) {
   w1.SetColor("blue");
   w2.SetArrow();
   w2.SetColor("blue");
-
-  w2 = w1;
-  w2.Rotate(gl2d::Radians::PI / 180.);
-  w2.a(w1.a());
 
   NormalizeLine(&w1);
   NormalizeLine(&w2);

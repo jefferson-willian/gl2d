@@ -37,6 +37,11 @@ std::vector<LineSegment> Tangent(const Point& p, const Circle& c) {
 }
 
 std::vector<LineSegment> Tangent(const Circle& c1, const Circle& c2) {
+  std::vector<LineSegment> lines;
+
+  if (c1 == c2)
+    return lines;
+
   // Create two lines from center-to-center in both circles.
   LineSegment l1(c1.Center(), c2.Center());
   LineSegment l2(c1.Center(), c2.Center());
@@ -46,12 +51,18 @@ std::vector<LineSegment> Tangent(const Circle& c1, const Circle& c2) {
   l1.Translate(l1.Normal() * c1.Radius());
   l2.Translate(-l1.Normal() * c1.Radius());
 
-  std::vector<LineSegment> lines;
-
   lines.emplace_back(l1);
   lines.emplace_back(l2);
 
-  if (util::cmpD(Distance(c1.Center(), c2.Center()), c1.Radius() + c2.Radius()) >= 0) {
+  if (util::cmpD(Distance(c1.Center(), c2.Center()), c1.Radius() + c2.Radius()) == 0) {
+    LineSegment l3(c1.Center(), c1.Center());
+    LineSegment l4(c1.Center(), c1.Center());
+    Vector v(c1.Center(), c2.Center());
+    v.Normalize();
+    v *= c1.Radius();
+    l3.Translate(v);
+    lines.emplace_back(l3);
+  } else if (util::cmpD(Distance(c1.Center(), c2.Center()), c1.Radius() + c2.Radius()) > 0) {
     Radians crossAngle = Radians::Acos(c1.Radius() * 2 / Distance(c1.Center(),
           c2.Center()));
 
