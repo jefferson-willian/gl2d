@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmake gl2d/external/googletest/googletest/
-cmake gl2d/
-cmake gl2d/test/
-cmake graphics
+(cd gl2d/external/googletest/googletest/ && cmake .)
+(cd gl2d/ && cmake .)
+(cd gl2d/test/ && cmake .)
+(cd graphics && cmake .)
