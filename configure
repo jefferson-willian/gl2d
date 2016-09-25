@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cmake gl2d/external/googletest/googletest/
+cmake gl2d/
+cmake gl2d/test/
+cmake graphics
