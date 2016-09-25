@@ -37,6 +37,11 @@ double Vector::Magnitude() const {
   return sqrt(dest_.x() * dest_.x() + dest_.y() * dest_.y());
 }
 
+void Vector::Magnitude(double magnitude) {
+  this->Normalize();
+  *this *= magnitude;
+}
+
 Vector& Vector::Normalize() {
   *this /= Magnitude();
   return *this;

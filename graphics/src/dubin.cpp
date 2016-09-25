@@ -39,7 +39,7 @@ gl2d::Point GetPoint(const gl2d::Circle& c, const gl2d::Point& p) {
   v.Normalize();
   v *= c.Radius();
 
-  return v.Point();
+  return v.Point() + c.Center();
 }
 
 }  // namespace
@@ -85,27 +85,37 @@ std::vector<Path> Path::GetAllPaths(const gl2d::Point& a, const gl2d::Vector& d1
     }
   }
 
-  auto c1 = ca.first;
-  auto c2 = cb.first;
+  for (int i = 0; i < 2; ++i) {
+    auto c1 = i == 0 ? ca.first : ca.second;
+    auto c2 = i == 0 ? cb.first : cb.second;
 
-  gl2d::Vector v(c1.Center(), c2.Center());
-  v.Normalize();
-  v *= 2 * c1.Radius();
-  v.Rotate(gl2d::Radians::Acos((gl2d::Distance(c1.Center(), c2.Center()) / 2) /
-        (2 * c1.Radius())));
+    if (c1 == c2)
+      continue;
 
-  gl2d::Circle c3(c1.Center() + v.Point(), c1.Radius());
+    double dist = gl2d::Distance(c1.Center(), c2.Center());
 
-  gl2d::Arc rad1(c1, a, GetPoint(c1, c3.Center()));
-  gl2d::Arc rad2(c3, 0 * gl2d::Radians::TWOPI, gl2d::Radians::TWOPI - (gl2d::Radians::TWOPI / 360.));
-  gl2d::Arc rad3(c2, GetPoint(c2, c3.Center()), b);
+    if (gl2d::util::cmpD(dist, c1.Radius() * 4) > 0)
+      continue;
 
-  Path p_;
-  p_.out_ = rad1;
-  p_.in_ = rad3;
-  p_.mid_circle_ = rad2;
+    gl2d::Vector v(c1.Center(), c2.Center());
+    v.Magnitude(2 * c1.Radius());
+    auto rotation = gl2d::Radians::Acos((dist / 2) / v.Magnitude());
+    v.Rotate(i == 0 ? rotation : -rotation);
 
-  paths.emplace_back(p_);
+    gl2d::Circle c3(c1.Center() + v.Point(), c1.Radius());
+
+    gl2d::Arc rad1 = i == 0 ? gl2d::Arc(c1, a, c3.Center()) : gl2d::Arc(c1, c3.Center(), a);
+    gl2d::Arc rad2 = i == 0 ? gl2d::Arc(c3, c2.Center(), c1.Center()) : gl2d::Arc(c3, c1.Center(), c2.Center());
+    gl2d::Arc rad3 = i == 0 ? gl2d::Arc(c2, c3.Center(), b) : gl2d::Arc(c2, b, c3.Center());
+
+    Path p_;
+    p_.out_ = rad1;
+    p_.in_ = rad3;
+    p_.mid_circle_ = rad2;
+    p_.is_csc_ = false;
+
+    paths.emplace_back(p_);
+  }
 
   return paths;
 }

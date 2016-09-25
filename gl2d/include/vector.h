@@ -41,6 +41,9 @@ class Vector {
   // Get the vector magnitude.
   double Magnitude() const;
 
+  // Set vector magnitude.
+  void Magnitude(double magnitude);
+
   // Normalize vector.
   Vector& Normalize();
 

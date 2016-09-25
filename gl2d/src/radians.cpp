@@ -113,17 +113,19 @@ double Radians::Sin(const Radians& radians) {
 }
 
 Radians Radians::Acos(double value) {
-  Radians rad(acos(value));
-  if (util::cmpD(rad.radians_, 0) < 0)
-    rad += TWOPI;
-  return rad;
+  if (util::cmpD(value, 1) == 0)
+    return Radians(acos(1));
+  if (util::cmpD(value, -1) == 0)
+    return Radians(acos(-1));
+  return Radians(acos(value));
 }
 
 Radians Radians::Asin(double value) {
-  Radians rad(asin(value));
-  if (util::cmpD(rad.radians_, 0) < 0)
-    rad += TWOPI;
-  return rad;
+  if (util::cmpD(value, 1) == 0)
+    return Radians(asin(1));
+  if (util::cmpD(value, -1) == 0)
+    return Radians(asin(-1));
+  return Radians(asin(value));
 }
 
 const Radians Radians::PI(pi_);

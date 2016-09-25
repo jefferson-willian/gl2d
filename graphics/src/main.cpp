@@ -63,7 +63,6 @@ std::pair<gl2d::Circle, gl2d::Circle> GetMidCircle(const gl2d::Circle& c1, const
 }
 
 int main(int argc, char** argv) {
-  /*
   std::vector<gl2d::Circle> neighborhoods;
 
   int N = atoi(argv[1]);
@@ -107,6 +106,7 @@ int main(int argc, char** argv) {
 
               if (path)
                 std::cout << path->Length() << std::endl;
+//                std::cout << path->Length() << " = " << w1.Point().x() << " " << w1.Point().y() << " - " << v1.x() << " " << v1.y() << " | " << w2.Point().x() << " " << w2.Point().y() << " - " << v2.x() << " " << v2.y() << std::endl;
               else
                 std::cout << 0 << std::endl;
               
@@ -120,18 +120,11 @@ int main(int argc, char** argv) {
   }
 
   return 0;
-  */
-
 
   graphics::Image img(10);
 
   graphics::LineSegment w1(gl2d::Point(0, 0), gl2d::Point(0, 1));
   graphics::LineSegment w2(gl2d::Point(1, 0), gl2d::Point(1, 1));
-
-  /*
-  graphics::LineSegment w1(gl2d::Point(-0.5, 0), gl2d::Point(-0.5, 1));
-  graphics::LineSegment w2(gl2d::Point(0.5, 0), gl2d::Point(0.5, 1));
-  */
 
   srand(time(0));
 
@@ -143,7 +136,7 @@ int main(int argc, char** argv) {
   */
 
   w1.SetArrow();
-  w1.SetColor("blue");
+  w1.SetColor("red");
   w2.SetArrow();
   w2.SetColor("blue");
 
@@ -156,10 +149,10 @@ int main(int argc, char** argv) {
   gl2d::Vector wayOutDirection = w1.Normal();
   gl2d::Vector wayInDirection = w2.Normal();
 
-  wayOutDirection.Rotate(-gl2d::Radians::PI / 2);
-  wayInDirection.Rotate(-gl2d::Radians::PI / 2);
+  wayOutDirection.Rotate(-(gl2d::Radians::PI / 2));
+  wayInDirection.Rotate(-(gl2d::Radians::PI / 2));
 
-  auto paths = dubin::Path::GetAllPaths(wayOutOrigin, wayOutDirection, wayInOrigin, wayInDirection, 1);
+  auto paths = dubin::Path::GetAllPaths(wayOutOrigin, wayOutDirection, wayInOrigin, wayInDirection, R);
 
   img.Add(&w1);
   img.Add(&w2);
