@@ -1,6 +1,0 @@
-#!/bin/bash
-
-(cd gl2d/external/googletest/googletest/ && cmake .)
-(cd gl2d/ && cmake .)
-(cd gl2d/test/ && cmake .)
-(cd graphics && cmake .)
