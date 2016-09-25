@@ -17,4 +17,8 @@ double Arc::Length() const {
   return l.val() * radius_;
 }
 
+void Arc::Complement() {
+  std::swap(start_, end_);
+}
+
 }  // namespace gl2d

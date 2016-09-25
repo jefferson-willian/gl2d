@@ -26,6 +26,8 @@ class Arc : public Circle {
 
   double Length() const;
 
+  void Complement();
+
   // Friend test classes.
   friend class ArcTest;
 };
